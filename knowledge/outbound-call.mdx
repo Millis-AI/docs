@@ -1,0 +1,59 @@
+---
+title: 'Outbound call'
+description: 'Trigger an outbound call to a specific number'
+icon: 'code'
+---
+
+## Basic
+
+This API allows you to initiate outbound phone calls from a specified Millis AI voice agent to any given phone number.
+
+#### Prerequisites
+
+Obtain your API key from your [Millis AI Account](https://app.millis.ai/settings/keys).
+
+#### API Details
+
+- Method: POST
+
+- URL: 
+```console
+https://api-west.millis.ai:8080/start_twilio_call
+```
+
+- Headers:
+```console
+Content-Type: application/json
+Authorization: YOUR_API_KEY
+```
+- Body:
+
+```json
+{
+  "init_agent": {
+    "agent_id": "your_agent_id"
+  },
+  "phone": "+country_code_phone_number"
+}
+```
+
+<Tip>
+
+Ensure the phone number includes the full international dialing format (e.g., +15555555555), with no dashes or spaces.
+
+Retrieve your voice agent ID from the Agent Details page on the playground.
+
+![title](/images/get-agent-id.png)
+
+</Tip>
+
+### Example Request using curl
+
+```console
+curl -X POST https://api-west.millis.ai:8080/start_twilio_call \
+-H "Content-Type: application/json" \
+-H "Authorization: YOUR_API_KEY" \
+-d '{"init_agent": {"agent_id": "your_agent_id"}, "phone": "+country_code_phone_number"}'
+```
+
+Replace `YOUR_API_KEY`, `your_agent_id`, and `+country_code_phone_number` with your specific details.
