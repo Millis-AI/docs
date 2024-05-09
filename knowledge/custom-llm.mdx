@@ -1,0 +1,95 @@
+---
+title: 'Custom LLM'
+description: 'Integrating a Custom LLM with Millis AI Voice Agent'
+icon: 'code'
+---
+
+## Basic
+
+This guide describes how to integrate your own LLM chatbot with a Millis AI voice agent. By connecting your custom LLM, you can power the voice agent with your chatbot's capabilities, providing a seamless voice interaction experience based on your model's responses.
+
+### Prerequisites
+
+- A functioning LLM chatbot capable of communicating via WebSockets.
+
+### Configuration Steps:
+
+#### 1. Set Up Your WebSocket Endpoint:
+
+Ensure that your LLM chatbot is set up to handle WebSocket connections. This endpoint should be capable of both receiving messages from and sending messages to the Millis AI server.
+
+#### 2. Update Agent Configuration:
+
+In your voice agent’s configuration on the Millis AI platform, specify your WebSocket endpoint. Add the custom_llm_websocket parameter to the agent's configuration settings:
+
+```json
+{
+  "custom_llm_websocket": "ws://your-websocket-url"
+}
+```
+
+Replace `ws://your-websocket-url` with the actual WebSocket URL of your custom LLM.
+
+### Voice Agent and LLM Interaction:
+
+When an outbound or inbound call is initiated with your voice agent, the Millis AI server will establish a connection to your specified WebSocket URL. Here's how the interaction flows after connection established:
+
+#### 1. Initiate a call: 
+
+Millis AI server will send `start_call` event to tell your server when the conversation starts.
+
+```json
+{
+  "type": "start_call",
+  "data": {
+    "stream_id": 0
+  }
+}
+```
+
+#### 2. Listen to user's message: 
+
+Millis AI streams the user's spoken message, including the full conversation transcript, to your LLM.
+
+```json
+{
+  "type": "stream_request",
+  "data": {
+    "stream_id": <stream_id>,
+    "transcript": [<chat_history>]
+  }
+}
+```
+
+#### 3. Generate LLM Responses:
+
+Your LLM processes the transcript and streams back the response. Indicate the end of a message stream with `end_of_stream`.
+
+```json
+{
+  "type": "stream_response",
+  "data": {
+    "stream_id": request['stream_id'],
+    "content": "text",
+    "end_of_stream": False / True
+  }
+}
+```
+
+<Tip>
+- When your LLM generates a response, attach the `stream_id` from the original request so that we can keep track of which response corresponds to which request.
+- For the first message that your server sends after receiving the `start_call` event, use the `stream_id` from the `start_call` event.
+</Tip>
+
+#### 4. Handle advanced interaction: 
+
+Millis AI manages the conversation flow, including interruption detection and end-of-turn signals. You will be notified of these events:
+
+```json
+{
+  "type": "interrupt",
+  "data": {
+    "stream_id": <stream_id>
+  }
+}
+```
