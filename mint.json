@@ -29,7 +29,8 @@
     {
       "group": "Get Started",
       "pages": [
-        "introduction"
+        "introduction",
+        "get-started/web-sdk"
       ]
     },
     {
