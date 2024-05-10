@@ -10,29 +10,14 @@ This guide describes how to integrate your own LLM chatbot with a Millis AI voic
 
 ### Prerequisites
 
-- A functioning LLM chatbot capable of communicating via WebSockets.
+- Create your Voice Agent on the [Playground](https://app.millis.ai/agents)
+- Setup a websocket server on your end.
 
-### Configuration Steps:
+### Set Up Your WebSocket Endpoint:
 
-#### 1. Set Up Your WebSocket Endpoint:
-
-Ensure that your LLM chatbot is set up to handle WebSocket connections. This endpoint should be capable of both receiving messages from and sending messages to the Millis AI server.
-
-#### 2. Update Agent Configuration:
-
-In your voice agent’s configuration on the Millis AI platform, specify your WebSocket endpoint. Add the custom_llm_websocket parameter to the agent's configuration settings:
-
-```json
-{
-  "custom_llm_websocket": "ws://your-websocket-url"
-}
-```
-
-Replace `ws://your-websocket-url` with the actual WebSocket URL of your custom LLM.
-
-### Voice Agent and LLM Interaction:
-
-When an outbound or inbound call is initiated with your voice agent, the Millis AI server will establish a connection to your specified WebSocket URL. Here's how the interaction flows after connection established:
+- When an outbound or inbound call is initiated with your voice agent, the Millis AI server will establish a connection to your specified WebSocket URL. 
+- Your endpoint should be capable of both receiving messages from and sending messages to the Millis AI server.
+- Here's how the interaction flows after connection established:
 
 #### 1. Initiate a call: 
 
@@ -93,3 +78,11 @@ Millis AI manages the conversation flow, including interruption detection and en
   }
 }
 ```
+
+### Connect your Voice Agent to your Custom LLM:
+
+In your voice agent’s configuration on the Millis AI platform, specify your WebSocket endpoint. 
+
+![Custom LLM Step 1](/images/custom-llm-1.png)
+
+![Custom LLM Step 2](/images/custom-llm-2.png)
