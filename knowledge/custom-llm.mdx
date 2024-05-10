@@ -27,7 +27,9 @@ Millis AI server will send `start_call` event to tell your server when the conve
 {
   "type": "start_call",
   "data": {
-    "stream_id": 0
+    "stream_id": <millis_stream_id>,
+    "agent_id": <millis_agent_id>,
+    "call_sid": <twilio_call_sid>
   }
 }
 ```
