@@ -1,0 +1,45 @@
+---
+title: 'Inbound call'
+description: 'Let Millis AI handle your inbound calls in twilio'
+icon: 'code'
+---
+
+## Basic
+
+Learn how to setup your twilio phone number so such that the call gets handle by a voice agent from Millis AI specified by you.
+
+#### Prerequisites
+
+Obtain your public_key from your [Millis AI Account](https://app.millis.ai/settings/keys).
+
+Setup a voice agent and obatain the agent_id from your [Millis AI Dashboard](https://app.millis.ai/agents).
+
+#### Method 1 : TwiML Bin
+
+Create a TwiML Bin with the following configuration. Replace public_key and agent_id with your own.
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+<Connect>
+<Stream url="wss://api-west.millis.ai:8080/twilio_inbound/{public_key}/{agent_id}" />
+</Connect>
+</Response>
+```
+1. In your phone number setting, select Webhook, TwiML Bin, Function, Studio Flow, Proxy Service
+2. Select Twiml Bin and the name of your TwiML Bin for `A call comes in` section.
+
+#### Method 2 : Use your own endpoint
+
+1. In your phone number setting, select Webhook, TwiML Bin, Function, Studio Flow, Proxy Service
+2. Select Webhook and your own backend endpoint for `A call comes in`
+3. Handle the webhook as you like and return the following as your response.
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+<Connect>
+<Stream url="wss://api-west.millis.ai:8080/twilio_inbound/{public_key}/{agent_id}" />
+</Connect>
+</Response>
+```

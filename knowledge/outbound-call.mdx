@@ -33,13 +33,13 @@ Authorization: YOUR_API_KEY
   "init_agent": {
     "agent_id": "your_agent_id"
   },
-  "phone": "+country_code_phone_number"
+  "phone": "phone_number"
 }
 ```
 
 <Tip>
 
-Ensure the phone number includes the full international dialing format (e.g., +15555555555), with no dashes or spaces.
+Ensure the phone number includes the full international dialing format (e.g., +15555555555), with no dashes or spaces. (Only US phone nubers are supported)
 
 Retrieve your voice agent ID from the Agent Details page on the playground.
 
@@ -53,7 +53,7 @@ Retrieve your voice agent ID from the Agent Details page on the playground.
 curl -X POST https://api-west.millis.ai:8080/start_twilio_call \
 -H "Content-Type: application/json" \
 -H "Authorization: YOUR_API_KEY" \
--d '{"init_agent": {"agent_id": "your_agent_id"}, "phone": "+country_code_phone_number"}'
+-d '{"init_agent": {"agent_id": "your_agent_id"}, "phone": "phone_number"}'
 ```
 
-Replace `YOUR_API_KEY`, `your_agent_id`, and `+country_code_phone_number` with your specific details.
+Replace `YOUR_API_KEY`, `your_agent_id`, and `phone_number` with your specific details.
