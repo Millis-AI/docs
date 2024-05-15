@@ -37,6 +37,7 @@
       "group": "Knowledge",
       "pages": [
         "knowledge/outbound-call",
+        "knowledge/inbound-call",
         "knowledge/custom-llm"
       ]
     }
