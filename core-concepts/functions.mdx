@@ -1,0 +1,109 @@
+---
+title: 'Functions for Agents'
+description: 'Functions are additional capabilities that you can integrate into your voice agents to enhance their utility and interaction dynamics.'
+icon: 'memo'
+---
+
+## Function Types:
+
+#### API Webhooks
+
+These allow the agent to perform actions or retrieve information during a conversation by calling external APIs. This is useful for tasks like booking appointments, fetching user-specific data, or updating records in real-time.
+
+#### Web Form Trigger
+
+Implement a function where the agent can prompt users to fill out a web form during a conversation. This is particularly useful for gathering detailed information or when textual input is more practical than voice. For example: Email, phone number, name, etc.
+
+## Understanding Function Structure
+
+### Webhook Function
+
+Webhook functions include the following components:
+
+```typescript
+interface FunctionCall { // Main structure for defining a function.
+  name: string;           // Function name, formatted as a valid identifier (no spaces, begins with a letter)
+  description: string;    // Detailed description to help the agent understand when to use the function
+  webhook: string;        // The URL of the webhook to which the request will be sent
+  header: object;         // Any necessary headers for the webhook request
+  params: Param[];        // Array of `Param` objects, defining the parameters needed by the function
+}
+
+interface Param {
+  name: string;           // Valid parameter name, no spaces, starts with a letter, can use underscores or camelCase
+  type: ParamType;        // The data type of the parameter (e.g., string, number, boolean)
+  description: string;    // Detailed description of the parameter
+  required: boolean;      // Whether this parameter is mandatory
+}
+```
+
+<Tip>
+- **Function and Parameter Naming**: Ensure that the function name and parameter names are formatted as valid identifiers. They should have no spaces, begin with a letter, and can include underscores or use camelCase, such as "get_email" or "getEmail".
+- **Descriptions** Provide comprehensive details in your function and parameter descriptions to help the agent understand what the function is for and when to use it.
+</Tip>
+
+### Web Form Function
+
+Web form functions allow your voice agent to trigger web forms on browser during conversation for data collection or user input. This is particularly useful for gathering detailed information or when textual input is more practical than voice. For example: Email, phone number, name, etc.
+
+```json
+export interface WebFormFunction {
+  name: string;                   // Function name, formatted as a valid identifier
+  description: string;            // Detailed description to help the agent understand the function's purpose
+  type: "web_form";               // Specify this as 'web_form' for web form functions
+  data: {                         // Define the parameter to collect from the web form
+    param: Param;
+  };
+}
+```
+
+## Example
+
+```json
+// Webhook
+{
+  name: "getUserInfo",
+  description: "Retrieves user information from the database using their email.",
+  webhook: "https://api.example.com/user",
+  header: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer your_access_token"
+  },
+  params: [
+    {
+      name: "email",
+      type: "string",
+      description: "The user's email that you collect during the conversation.",
+      required: true
+    }
+  ]
+};
+
+// Web Form
+{
+  name: "open_email_form",
+  description: "Trigger a web form for user to enter contact details.",
+  type: "web_form",
+  data: {
+    param: {
+      name: "email",
+      type: "string",
+      description: "Collect user's email info.",
+      required: true
+    }
+  }
+};
+```
+
+Once you have defined your function, you can integrate it into your agent’s configuration. Add the function to the tools array in your agent config.
+
+```json
+{
+  "tools": [
+    {
+      name: "getUserInfo",
+      // the rest of the function definition
+    }
+  ]
+}
+```

@@ -27,18 +27,25 @@
   },
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Overview",
       "pages": [
-        "introduction",
-        "get-started/web-sdk"
+        "introduction"
       ]
     },
     {
-      "group": "Knowledge",
+      "group": "Core Concepts",
       "pages": [
-        "knowledge/outbound-call",
-        "knowledge/inbound-call",
-        "knowledge/custom-llm"
+        "core-concepts/agent",
+        "core-concepts/functions"
+      ]
+    },
+    {
+      "group": "Integration Guides",
+      "pages": [
+        "integration/web-sdk",
+        "integration/custom-llm",
+        "integration/inbound-call",
+        "integration/outbound-call"
       ]
     }
   ]

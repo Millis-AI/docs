@@ -1,0 +1,64 @@
+---
+title: 'Agent'
+description: 'Voice Agents are the core components of the Millis AI platform.'
+icon: 'memo'
+---
+
+These agents can be customized to perform a variety of tasks, from answering questions to guiding users through complex processes, all via natural spoken language.
+
+### Agent Configurations
+
+It's important to configure your voice agent to ensure it operates effectively within your specific context. Here are the main aspects you can customize:
+
+```json
+{
+  "prompt": "You're a helpful assistant.", // This is what your agent might say first
+  "voice": {
+    "provider": "elevenlabs", // The provider for text to speech service
+    "voiceId": "voice-id" // The specific voice character you want to use
+  },
+  "llm": { // Optional: Specify the LLM model, default is Millis LLM if not provided
+    "model": "gpt-4o",
+    "provider": "openai"
+  },
+  "language": "en", // Optional: The language your agent will use, default is English
+  "custom_llm_websocket": "wss://", // Optional: Connect your own LLM via websocket
+  "tools": ["list of function calls"] // Special functions your agent can use
+}
+```
+
+### What You Can Customize
+
+#### Prompt:
+
+The system prompt is where you can provide specific instructions or information that the agent needs to remember and follow. This sets the initial context for your voice agent, guiding its responses and interactions.
+
+#### LLM (Large Language Model):
+(Optional) If not set, the default Millis AI model is used.
+
+- **Model**: Specifies the GPT model that your agent will operate on. We support OpenAI's latest model, GPT-4o, as well as open-source models like Meta Llama 3.
+- **Provider**: The provider who provides inference for the model.
+
+#### Voice Settings:
+
+- **Provider**: The service provider for the text-to-speech service. This config determines the quality of your agent's voice.
+- **voiceId**: The specific voice character from the chosen provider's catalog, allowing you to customize how your agent sounds.
+
+#### Language:
+
+Defines the operational language of the agent. If not specified, English is used by default.
+
+#### Custom LLM WebSocket:
+
+(Optional) If you prefer using your own custom LLM, specify a WebSocket URL to enable this connection.
+
+#### Tools: 
+
+A list of function calls the agent can execute to perform tasks or retrieve information during interactions. This includes API webhooks and other integrations.
+
+### LLM Model Choices
+You can select the AI model for your voice agent based on your needs:
+
+- **Default Millis AI Model**: Automatically used if no specific LLM model is provided. This model is best optimized for low latency.
+- **Popular Models from Providers**: Like OpenAI's GPT-4o, known for the best language processing capabilities but with a trade-off in latency.
+- **Custom Model via WebSocket**: Integrate your uniquely developed or tailored LLM to give your agent specialized abilities. You have full control over the agent's capabilities.
