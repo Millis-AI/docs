@@ -1,0 +1,34 @@
+---
+title: 'Webhook Function to call an API'
+description: 'Tutorial: Creating a Webhook Function to Fetch the Latest News'
+icon: 'memo'
+---
+
+This tutorial will guide you through setting up a simple webhook function that calls an API to retrieve information—specifically, the latest news based on a keyword using NewsAPI. Before you begin, make sure you have an account with NewsAPI and obtain your API key.
+
+### Define the Webhook Function
+
+Start by defining a `FunctionCall` for your webhook function via the Playground or our APIs. You'll need to specify the name, description, webhook URL, headers, and parameters required to make the API call.
+
+Example function definition:
+
+```json
+{
+  name: "get_latest_news",
+  description: "Fetch the latest news based on a keyword.",
+  webhook: "https://newsapi.org/v2/everything?pageSize=1",
+  header: {
+    "Authorization": "<your news api key>"
+  },
+  params: [
+    {
+      name: "q", // use the exact parameter that the newsapi api requires
+      type: "string",
+      description: "The keyword to search for news.",
+      required: true
+    }
+  ]
+}
+```
+
+To test the function, simply prompt the agent to tell you about the latest news on "some keyword".

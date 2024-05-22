@@ -47,6 +47,12 @@
         "integration/inbound-call",
         "integration/outbound-call"
       ]
+    },
+    {
+      "group": "Tutorials",
+      "pages": [
+        "tutorials/webhook-function-call-api"
+      ]
     }
   ]
 }
