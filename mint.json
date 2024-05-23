@@ -51,7 +51,8 @@
     {
       "group": "Tutorials",
       "pages": [
-        "tutorials/webhook-function-call-api"
+        "tutorials/webhook-function-call-api",
+        "tutorials/setup-custom-llm-websocket"
       ]
     }
   ]
