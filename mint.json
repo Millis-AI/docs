@@ -5,6 +5,7 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
+  "openapi": "https://api-west.millis.ai:8080/openapi.json",
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#12B76A",

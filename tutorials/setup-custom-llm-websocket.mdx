@@ -13,9 +13,8 @@ A sample code using FastAPI websocket and asyncio.
 ```python
 app = FastAPI()
 
-@app.websocket("/llm-websocket/{call_id}")
-async def websocket_handler(websocket: WebSocket, call_id: str):
-    # call_id: a unique identifier of the call session.
+@app.websocket("/llm-websocket")
+async def websocket_handler(websocket: WebSocket):
     await websocket.accept()
 
     current_stream_id = -1
