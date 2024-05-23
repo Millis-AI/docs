@@ -52,6 +52,7 @@
       "group": "Tutorials",
       "pages": [
         "tutorials/webhook-function-call-api",
+        "tutorials/integrate-function-call-with-make.com",
         "tutorials/setup-custom-llm-websocket"
       ]
     }

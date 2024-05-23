@@ -1,0 +1,38 @@
+---
+title: 'Integrate Function Calls with Make.com'
+description: How to leverage Make.com (formerly Integromat) to expand the capabilities of your Millis AI voice agents through custom function calls'
+icon: 'memo'
+---
+
+Make.com provides a powerful platform for automating workflows between various applications. By integrating Make.com with your Millis AI agent using webhooks, you can automate tasks, fetch data, and more, enriching the conversational experience.
+
+### Steps to Utilize Function Calls with Make.com
+
+#### Step 1: Create a Scenario in Make.com
+
+1.  Log in to your Make.com account and navigate to the dashboard.
+2.	Create a new Scenario by clicking on the “+” or “Create a new scenario” button.
+3.	Search for and select the Webhooks module to add it as the first component of your scenario. Choose ‘Custom Webhook’ as the trigger.
+4.	Set up the webhook by naming it and saving the automatically generated webhook URL. You will need this URL to configure the function call in Millis AI.
+![Integrate Make.com Step 1](/images/integrate-make-1.png)
+5.  Add another module following the Webhook trigger. This module should perform the necessary actions or fetch data as required.
+6.  Add a webhook response module if needed, to format the data or action outcomes to be sent back to the Millis AI voice agent.
+![Integrate Make.com Step 2](/images/integrate-make-2.png)
+
+#### Step 2: Configure the Function Call in Millis AI
+
+1.	Log into your Millis AI dashboard and select the voice agent you wish to configure.
+2.	Navigate to the function setup area and create a new function call:
+
+```json
+{
+  "name": "fetchPricingData",
+  "description": "Retrieves the latest information about pricing",
+  "webhook": "https://hook.make.com/your_custom_webhook_url",
+  "header": {},
+  "params": [
+    // any params needed
+  ]
+}
+```
+Replace `https://hook.make.com/your_custom_webhook_url` with the webhook URL you obtained from Make.com.
