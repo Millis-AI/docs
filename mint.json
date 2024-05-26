@@ -46,6 +46,7 @@
       "pages": [
         "integration/web-sdk",
         "integration/custom-llm",
+        "integration/embeddable-call-widget",
         "integration/inbound-call",
         "integration/outbound-call"
       ]
