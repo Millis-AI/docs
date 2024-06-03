@@ -18,16 +18,23 @@ The pricing for LLMs is based on the number of tokens processed. Here, we transl
 * **GPT-4o**:
   * Input: $5.00 per 1 million tokens
   * Output: $15.00 per 1 million tokens
-  * Estimated costs per minute: $0.010 per minute
+  * Estimated costs per minute: $0.004 per minute
 * **GPT-4 Turbo**:
   * Input: $10.00 per 1 million tokens
   * Output: $30.00 per 1 million tokens
-  * Estimated costs per minute: $0.020 per minute
+  * Estimated costs per minute: $0.008 per minute
 * **GPT-3.5 Turbo**:
   * Input: $0.50 per 1 million tokens
   * Output: $1.50 per 1 million tokens
-  * Estimated costs per minute: $0.001 per minute
+  * Estimated costs per minute: $0.0004 per minute
+* **Meta Llama-3**:
+  * Input: $0.90 per 1 million tokens
+  * Output: $0.90 per 1 million tokens
+  * Estimated costs per minute: $0.00018 per minute
 * **Your LLM**: No charge for using your own custom LLM
+* **Choose By Millis - Optimize for Best Latency**:
+  * Millis automatically selects the best available LLM model from above with the lowest latency for your specific configuration and functions.
+  * This option is perfect for users looking for the most efficient performance without the need to manually switch between models.
 
 ### TTS Provider Pricing
 
@@ -37,17 +44,21 @@ TTS pricing is based on the number of characters or words that the agent speaks.
 * **OpenAI**: $$0.015 / 1,000 characters (~ $0.012/min)
 * **Rime**: $$0.075 / 1,000 characters (~ $0.06/min)
 
-*A typical minute of voice interaction might involve processing around 500 tokens (2000 characters).*
+*A typical minute of voice interaction might involve processing around 200 tokens (800 characters).*
 
 ### STT Pricing
 
 For converting spoken inputs into text, we charge **$0.0043** per minute.
 
 ## Example Calculation
-Let's calculate the total cost for a 10-minute session using GPT-4o and Eleven Labs TTS, with an average speech rate:
+Let's calculate the total cost for a 10-minute session using GPT-4o and Eleven Labs TTS, with an average speech rate. Assuming each party speaks for approximately 5 minutes during the 10-minute session:
 
-- Millis AI base charge: 10 min x $0.02/min = $0.20
-- GPT-4o LLM charge: 10 min x $0.010/min = $0.10
-- Eleven Labs TTS charge: 2,000 characters x $0.15/1,000 characters = $0.30
-- STT charge: 10 min x $0.0043/min = $0.043
-- Total cost: $0.20 (base) + $0.10 (LLM) + $0.30 (TTS) + $0.043 (STT) = $0.643
+- **Millis AI base charge**: 10 min x $0.02/min = $0.20
+- **GPT-4o LLM charge**: 10 min x $0.004/min = $0.04
+- **Eleven Labs TTS charge**:
+Since the agent only speaks for about half of the session (5 minutes), and assuming an average speech rate translates to 4,000 characters spoken by the agent:
+  - 4,000 characters x $0.15/1,000 characters = $0.60
+- **STT charge**:
+Since the human also speaks for approximately half of the session (5 minutes):
+  - 5 minutes x $0.0043/min = $0.0215
+- **Total cost**: $0.20 (base) + $0.04 (LLM) + $0.60 (TTS) + $0.0215 (STT) = $0.8615
