@@ -1,0 +1,134 @@
+---
+title: 'Build Native Apps with Websocket'
+description: 'Using Millis Platform via WebSocket to build voice agents on desktop and mobile'
+icon: 'code'
+---
+
+This tutorial guides you through the process of integrating the Millis AI platform directly via WebSocket to build voice agents for desktop or mobile apps. Users can capture audio natively and send it to Millis via WebSocket, receiving voice responses in real-time.
+
+## Requirements
+
+- Create your Voice Agent on the [Playground](https://app.millis.ai/agents)
+- Use native APIs on desktop or mobile to capture and playback audio.
+- Establish websocket connection to Millis server.
+
+## Overview
+
+- **WebSocket Endpoint:** wss://api-west.millis.ai:8080/millis
+- **Sample Rate:** 16000 Hz
+- **Encoding:** PCM
+- **Channels:** 1
+- **Chunk Size:** Any
+
+## Step-by-Step Guide
+
+### 1. Establishing a WebSocket Connection
+Begin by establishing a connection with the Millis AI WebSocket endpoint. Here's an example code in javascript.
+
+```javascript
+let ws = new WebSocket("wss://api-west.millis.ai:8080/millis");
+ws.binaryType = "arraybuffer";
+```
+
+### 2. Sending the Initiate Message
+Once connected, send an initiate message to start the interaction.
+```javascript
+ws.onopen = () => {
+  let initiateMessage = {
+    method: "initiate",
+    data: {
+      agent_id: "your_agent_id", // Or replace with agent_config: <config> for dynamic configuration
+      public_key: "your_public_key",
+    }
+  };
+  ws.send(JSON.stringify(initiateMessage));
+};
+```
+
+Millis will respond with the message `{"method": "onready"}` indicating readiness.
+
+### 3. Capturing and Sending Audio
+
+Capture audio on your device and send it as an ArrayBuffer to Millis. Make sure it's an `Uint8Array`.
+
+```javascript
+function sendAudioPacket(audioData) {
+  let audioBuffer = new Uint8Array(audioData);
+  ws.send(audioBuffer);
+}
+```
+<Tip>
+**Note**: Audio packets should be in PCM format, 16000 Hz sample rate, and mono (1 channel).
+</Tip>
+
+### 4. Receiving and Playing Audio Responses
+
+Millis will send audio responses as ArrayBuffers with the same format and sample rate. You need to buffer and play these on your side.
+
+```javascript
+ws.onmessage = (event) => {
+  if (event.data instanceof ArrayBuffer) {
+    // ArrayBuffer received, handle as audio packets
+    let audioResponse = new Uint8Array(event.data);
+    // Buffer and play the audio response
+  } else {
+    // String received, handle as normal events
+    let message = JSON.parse(event.data);
+    handleIncomingMessage(message);
+  }
+};
+```
+ArrayBuffer data will be the audio packets, while string data indicates normal events that you need to process accordingly.
+
+### 5. Keeping the Connection Alive
+
+Send a `{"method": "ping"}` message every 1000 packets to keep the connection alive.
+
+### 6. Handling Incoming Events from Millis
+
+Millis may send various events to manage the session and interaction. Here is the logic behind each message:
+
+- **pause**: Millis detected some voice activity from the client. The agent decides to temporarily pause talking and observe the next voice activity. In this case, you should still keep and buffer incoming audio packets but not play them.
+- **unpause**: If Millis detects that it's not the human trying to talk over or interrupt, the agent will continue talking. In this case, you should continue playing audio packets in the buffer.
+- **clear**: Millis detected human's voice, indicating human interruption intent. The agent will reset and stay silent to let the human continue talking. In this case, clear all audio buffers and stop playback.
+- **ontranscript**: Real-time transcript of the client's audio.
+- **onresponsetext**: Real-time transcript of the agent's response.
+- **onsessionended**: For any reason Millis decides to end the session, you will receive this event.
+- **start_answering**: The agent decides to start answering the human's query.
+- **ai_action**: For debug purposes. During the conversation, Millis AI intelligently decides to take some action. Listen to this event to understand what the agent is trying to do.
+
+**Example:**
+```javascript
+function handleIncomingMessage(message) {
+  switch (message.method) {
+    case "pause":
+      // Pause playback and buffer incoming audio packets
+      break;
+    case "unpause":
+      // Resume playback of buffered audio packets
+      break;
+    case "clear":
+      // Clear audio buffer and stop playback
+      break;
+    case "ontranscript":
+      console.log("Client's audio transcript:", message.data);
+      break;
+    case "onresponsetext":
+      console.log("Agent's response transcript:", message.data);
+      break;
+    case "onsessionended":
+      console.log("Session ended.");
+      ws.close();
+      break;
+    case "start_answering":
+      console.log("Agent starts answering the query.");
+      break;
+    case "ai_action":
+      console.log("AI Action:", message.data);
+      break;
+  }
+}
+```
+
+### 7. Closing the Connection
+Simply close the WebSocket connection to stop the conversation.
