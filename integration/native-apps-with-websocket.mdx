@@ -37,7 +37,9 @@ ws.onopen = () => {
   let initiateMessage = {
     method: "initiate",
     data: {
-      agent_id: "your_agent_id", // Or replace with agent_config: <config> for dynamic configuration
+      agent: {
+        agent_id: "your_agent_id", // Or replace with agent_config: <config> for dynamic configuration
+      }
       public_key: "your_public_key",
     }
   };
