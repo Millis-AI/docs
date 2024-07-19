@@ -51,11 +51,34 @@ msClient.start({
   prompt: "You're a helpful assistant.", // Example prompt
   voice: {
     provider: "elevenlabs", // Voice provider
-    name: "voice-id" // Replace 'voice-id' with the ID of the desired voice
+    voice_id: "voice-id" // Replace 'voice-id' with the ID of the desired voice
   },
-  tools: ["list of function calls"] // Replace with actual function calls you need
+  language: "<language_code>", // optional - use language code such as en, es
+  tools: [
+    {
+      name: "get_user_data",
+      description: "",
+      webhook: "https://...",
+      header: {
+        "Content-Type": "application/json",
+        "Authorization": ""
+      },
+      params: [
+        {
+          name: "",
+          type: "string" | "number" | "boolean",
+          description: "",
+          required: true
+        }
+      ]
+    }
+  ], // Replace with actual function calls you need
+  custom_llm_websocket: "wss://...", // optional - enable custom llm
+  llm: "", // optional - choose llm model. Ex: gpt-4o, llama-3-70b
 });
 ```
+
+To obtain the voice_id, use this API to acquire the complete list of voices: https://api-west.millis.ai:8080/voices
 
 ### 4. Stop a Conversation:
 
@@ -71,7 +94,7 @@ msClient.stop();
     });
 
     msClient.on("onready", () => {
-      // When the conversation is ready 
+      // When the conversation is ready
     });
 
     msClient.on("onaudio", (audio: Uint8Array) => {
