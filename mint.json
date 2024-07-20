@@ -38,7 +38,8 @@
       "group": "Core Concepts",
       "pages": [
         "core-concepts/agent",
-        "core-concepts/functions"
+        "core-concepts/functions",
+        "core-concepts/regions"
       ]
     },
     {

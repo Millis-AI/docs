@@ -1,0 +1,32 @@
+---
+title: 'Running Voice Agents in Different Regions'
+icon: 'memo'
+---
+
+Millis AI now supports running voice agents in various regions, including the EU, to help reduce latency for calls in those regions and ensure compliance with EU laws. This documentation will guide you through the process of selecting and configuring regions for your voice agents.
+
+### Selecting Regions
+
+There are two primary ways to set the region for your voice agents in Millis:
+
+1. Set Region for Your Phone Number
+When importing phone numbers from Twilio or Vonage, you can choose the desired region. This setting will ensure that calls are routed through the selected region, optimizing latency and compliance.
+
+2. Set Region Endpoint When Starting Your Agent from Web SDK
+You can specify the region endpoint when initializing your agent using the Millis Web SDK. Use the following code to set the region:
+
+```javascript
+const msClient = Millis.createClient({
+  publicKey: '<your-millis-public-key>',
+  endPoint: '<region-endpoint>'
+});
+```
+
+Replace `<your-millis-public-key>` with your actual Millis public key and `<region-endpoint>` with the endpoint of the desired region.
+
+### List of Available Endpoints
+
+- **us-west**: `https://api-west.millis.ai`
+- **eu-west**: `https://api-eu-west.millis.ai`
+
+More endpoints will be available soon.
