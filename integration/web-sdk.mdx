@@ -37,10 +37,12 @@ Obtain your public key from your [Millis AI Playground](https://app.millis.ai/se
 First, create a voice agent from the [Playground](https://app.millis.ai/agents). Then, start a conversation with your agent using the following code:
 
 ```js
-msClient.start(<agent-id>);
+msClient.start(<agent-id>, metadata?: {});
 ```
 
-Replace 'agent-id' with the ID of your agent obtained from the Playground.
+Replace `agent-id` with the ID of your agent obtained from the Playground.
+
+The `metadata` is optional. You can pass any additional data to the session, which we will forward to your custom LLM and function webhooks.
 
 #### Dynamically Creating a Temporary Voice Agent
 
@@ -75,7 +77,7 @@ msClient.start({
   ], // Replace with actual function calls you need
   custom_llm_websocket: "wss://...", // optional - enable custom llm
   llm: "", // optional - choose llm model. Ex: gpt-4o, llama-3-70b
-});
+}, metadata: {});
 ```
 
 To obtain the voice_id, use this API to acquire the complete list of voices: https://api-west.millis.ai:8080/voices

@@ -15,11 +15,11 @@ This guide describes how to integrate your own LLM chatbot with a Millis AI voic
 
 ### Set Up Your WebSocket Endpoint:
 
-- When an outbound or inbound call is initiated with your voice agent, the Millis AI server will establish a connection to your specified WebSocket URL. 
+- When an outbound or inbound call is initiated with your voice agent, the Millis AI server will establish a connection to your specified WebSocket URL.
 - Your endpoint should be capable of both receiving messages from and sending messages to the Millis AI server. Here's a [Sample Code](/tutorials/setup-custom-llm-websocket).
 - Here's how the interaction flows after connection established:
 
-#### 1. Initiate a call: 
+#### 1. Initiate a call:
 
 Millis AI server will send `start_call` event to tell your server when the conversation starts.
 
@@ -30,12 +30,13 @@ Millis AI server will send `start_call` event to tell your server when the conve
     "stream_id": <millis_stream_id>,
     "agent_id": <millis_agent_id>,
     "call_sid": <twilio_call_sid>, // optional, None if conversation is not via Twilio phone call
-    "session_id": <millis_session_id> // unique id of the call session
+    "session_id": <millis_session_id>, // unique id of the call session
+    "metadata": {your own metadata} // The metadata that you add in msClient.start function
   }
 }
 ```
 
-#### 2. Listen to user's message: 
+#### 2. Listen to user's message:
 
 Millis AI streams the user's spoken message, including the full conversation transcript, to your LLM.
 
@@ -69,7 +70,7 @@ Your LLM processes the transcript and streams back the response. Indicate the en
 - For the first message that your server sends after receiving the `start_call` event, use the `stream_id` from the `start_call` event.
 </Tip>
 
-#### 4. Handle advanced interaction: 
+#### 4. Handle advanced interaction:
 
 Millis AI manages the conversation flow, including interruption detection and end-of-turn signals. You will be notified of these events:
 
@@ -84,7 +85,7 @@ Millis AI manages the conversation flow, including interruption detection and en
 
 ### Connect your Voice Agent to your Custom LLM:
 
-In your voice agent’s configuration on the Millis AI platform, specify your WebSocket endpoint. 
+In your voice agent’s configuration on the Millis AI platform, specify your WebSocket endpoint.
 
 ![Custom LLM Step 1](/images/custom-llm-1.png)
 
