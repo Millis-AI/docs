@@ -54,6 +54,12 @@
       ]
     },
     {
+      "group": "Telephony",
+      "pages": [
+        "phone/import-phone-number"
+      ]
+    },
+    {
       "group": "Tutorials",
       "pages": [
         "tutorials/webhook-function-call-api",
