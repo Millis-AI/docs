@@ -8,18 +8,18 @@ icon: 'code'
 
 This guide describes how to integrate your own LLM chatbot with a Millis AI voice agent. By connecting your custom LLM, you can power the voice agent with your chatbot's capabilities, providing a seamless voice interaction experience based on your model's responses.
 
-### Prerequisites
+## Prerequisites
 
 - Create your Voice Agent on the [Playground](https://app.millis.ai/agents)
 - Setup a websocket server on your end.
 
-### Set Up Your WebSocket Endpoint:
+## Set Up Your WebSocket Endpoint:
 
 - When an outbound or inbound call is initiated with your voice agent, the Millis AI server will establish a connection to your specified WebSocket URL.
 - Your endpoint should be capable of both receiving messages from and sending messages to the Millis AI server. Here's a [Sample Code](/tutorials/setup-custom-llm-websocket).
 - Here's how the interaction flows after connection established:
 
-#### 1. Initiate a call:
+### 1. Initiate a call:
 
 Millis AI server will send `start_call` event to tell your server when the conversation starts.
 
@@ -36,7 +36,7 @@ Millis AI server will send `start_call` event to tell your server when the conve
 }
 ```
 
-#### 2. Listen to user's message:
+### 2. Listen to user's message:
 
 Millis AI streams the user's spoken message, including the full conversation transcript, to your LLM.
 
@@ -50,7 +50,7 @@ Millis AI streams the user's spoken message, including the full conversation tra
 }
 ```
 
-#### 3. Generate LLM Responses:
+### 3. Generate LLM Responses:
 
 Your LLM processes the transcript and streams back the response. Indicate the end of a message stream with `end_of_stream`.
 
@@ -70,20 +70,68 @@ Your LLM processes the transcript and streams back the response. Indicate the en
 - For the first message that your server sends after receiving the `start_call` event, use the `stream_id` from the `start_call` event.
 </Tip>
 
-#### 4. Handle advanced interaction:
+## Handle advanced interaction:
 
 Millis AI manages the conversation flow, including interruption detection and end-of-turn signals. You will be notified of these events:
 
+### `partial_transcript`
+
+**Description:** Sent to provide a partial transcript of the conversation. The transcript can be either final or partial.
+
+**Message Structure:**
 ```json
 {
-  "type": "interrupt",
+  "type": "partial_transcript",
   "data": {
-    "stream_id": <stream_id>
+    "session_id": "string",
+    "transcript": "string",
+    "is_final": "boolean"
   }
 }
 ```
 
-### Connect your Voice Agent to your Custom LLM:
+**Parameters:**
+- `session_id`: The unique identifier for the session.
+- `transcript`: The partial or complete transcript text.
+- `is_final`: Boolean indicating whether the transcript is final.
+
+### `playback_finished`
+
+**Description:** Sent when the playback of agent's audio stream has finished.
+
+**Message Structure:**
+```json
+{
+  "type": "playback_finished",
+  "data": {
+    "session_id": "string",
+    "stream_id": "integer"
+  }
+}
+```
+
+**Parameters:**
+- `session_id`: The unique identifier for the session.
+- `stream_id`: The unique identifier for the stream.
+
+### `interrupt`
+
+**Description:** Sent when user interrupts agent's stream.
+
+**Message Structure:**
+```json
+{
+  "type": "interrupt",
+  "stream_id": "integer"
+}
+```
+
+**Parameters:**
+- `stream_id`: The unique identifier for the stream.
+
+---
+
+## Connect your Voice Agent to your Custom LLM:
 
 In your voice agent’s configuration on the Millis AI platform, specify your WebSocket endpoint.
 
