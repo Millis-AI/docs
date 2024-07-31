@@ -25,10 +25,12 @@ import Millis from '@millisai/web-sdk';
 ### 2. Initialize the Client:
 
 ```js
-const msClient = Millis.createClient({publicKey: 'your_public_key'});
+const msClient = Millis.createClient({publicKey: 'your_public_key', endPoint?: 'region-based-endpoint'});
 ```
 
 Obtain your public key from your [Millis AI Playground](https://app.millis.ai/settings/keys)
+
+Learn more about which `endPoint` to use [HERE](https://millisai.mintlify.app/core-concepts/regions).
 
 ### 3. Start a Conversation:
 
@@ -114,6 +116,191 @@ msClient.stop();
     msClient.on("onerror", (error) => {
       // An error occurred
     });
+```
+
+## Event List
+
+### `onopen`
+
+**Description:** Emitted when the WebSocket connection is successfully opened.
+
+**Callback Signature:**
+```typescript
+'onopen': () => void;
+```
+
+### `onready`
+
+**Description:** Emitted when the client is ready to start processing audio or other tasks.
+
+**Callback Signature:**
+```typescript
+'onready': () => void;
+```
+
+### `onsessionended`
+
+**Description:** Emitted when a session has ended.
+
+**Callback Signature:**
+```typescript
+'onsessionended': () => void;
+```
+
+### `onaudio`
+
+**Description:** Emitted when audio data is received.
+
+**Callback Signature:**
+```typescript
+'onaudio': (audio: Uint8Array) => void;
+```
+
+**Parameters:**
+- `audio` - The received audio data in `Uint8Array` format.
+
+### `onresponsetext`
+
+**Description:** Emitted when agent's response text is received.
+
+**Callback Signature:**
+```typescript
+'onresponsetext': (text: string, payload: { is_final?: boolean }) => void;
+```
+
+**Parameters:**
+- `text` - The received response text.
+- `payload` - An object containing additional information.
+  - `is_final` (optional) - A boolean indicating if the response text is final.
+
+### `ontranscript`
+
+**Description:** Emitted when user's transcript text is received.
+
+**Callback Signature:**
+```typescript
+'ontranscript': (text: string, payload: { is_final?: boolean }) => void;
+```
+
+**Parameters:**
+- `text` - The received transcript text.
+- `payload` - An object containing additional information.
+  - `is_final` (optional) - A boolean indicating if the transcript text is final.
+
+### `analyzer`
+
+**Description:** Emitted with an `AnalyserNode` for agent's audio analysis.
+
+**Callback Signature:**
+```typescript
+'analyzer': (analyzer: AnalyserNode) => void;
+```
+
+**Parameters:**
+- `analyzer` - The `AnalyserNode` used for audio analysis.
+
+### `useraudioready`
+
+**Description:** Emitted when user audio is ready for processing.
+
+**Callback Signature:**
+```typescript
+'useraudioready': (data: { analyser: AnalyserNode, stream: MediaStream }) => void;
+```
+
+**Parameters:**
+- `data` - An object containing audio-related information.
+  - `analyser` - The `AnalyserNode` for user's audio analysis.
+  - `stream` - The `MediaStream` containing the user's audio data.
+
+### `onlatency`
+
+**Description:** Emitted to report latency information for debugging purpose.
+
+**Callback Signature:**
+```typescript
+'onlatency': (latency: number) => void;
+```
+
+**Parameters:**
+- `latency` - The measured latency in milliseconds.
+
+### `onclose`
+
+**Description:** Emitted when the WebSocket connection is closed.
+
+**Callback Signature:**
+```typescript
+'onclose': (event: CloseEvent) => void;
+```
+
+**Parameters:**
+- `event` - The `CloseEvent` containing details about the WebSocket closure.
+
+### `onerror`
+
+**Description:** Emitted when an error occurs in the WebSocket connection.
+
+**Callback Signature:**
+```typescript
+'onerror': (error: Event) => void;
+```
+
+**Parameters:**
+- `error` - The `Event` containing details about the error.
+
+---
+
+### Example Usage
+
+Here's an example of how to listen to these events in the `Client` class:
+
+```typescript
+const client = new Client(config);
+
+client.on('onopen', () => {
+  console.log('WebSocket connection opened.');
+});
+
+client.on('onready', () => {
+  console.log('Client is ready.');
+});
+
+client.on('onsessionended', () => {
+  console.log('Session ended.');
+});
+
+client.on('onaudio', (audio) => {
+  console.log('Audio received:', audio);
+});
+
+client.on('onresponsetext', (text, payload) => {
+  console.log('Response text:', text, 'Payload:', payload);
+});
+
+client.on('ontranscript', (text, payload) => {
+  console.log('Transcript:', text, 'Payload:', payload);
+});
+
+client.on('analyzer', (analyzer) => {
+  console.log('Analyzer node:', analyzer);
+});
+
+client.on('useraudioready', (data) => {
+  console.log('User audio ready:', data);
+});
+
+client.on('onlatency', (latency) => {
+  console.log('Latency:', latency);
+});
+
+client.on('onclose', (event) => {
+  console.log('WebSocket connection closed:', event);
+});
+
+client.on('onerror', (error) => {
+  console.error('WebSocket error:', error);
+});
 ```
 
 ## Support
