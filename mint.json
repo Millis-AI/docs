@@ -39,6 +39,7 @@
       "pages": [
         "core-concepts/agent",
         "core-concepts/functions",
+        "core-concepts/webhooks",
         "core-concepts/regions"
       ]
     },

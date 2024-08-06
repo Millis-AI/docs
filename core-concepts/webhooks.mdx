@@ -1,0 +1,145 @@
+---
+title: 'Webhooks'
+description: 'Millis AI Webhooks Documentation'
+icon: 'memo'
+---
+
+Millis AI offers two primary webhooks for enhancing and customizing your voice agent interactions. These webhooks allow you to integrate external systems and processes seamlessly with your Millis AI implementation.
+
+## Prefetch Data Webhook
+
+The Prefetch Data Webhook allows you to provide the voice agent with necessary data before the conversation starts. This can help personalize interactions and improve the efficiency of your voice agent.
+
+### How It Works
+
+1. **Webhook Invocation**: The webhook is invoked before the conversation begins.
+2. **Data Retrieval**: Your server retrieves and processes the required data.
+3. **Response to Millis AI**: The retrieved data is sent back to Millis AI, where it can be used during the conversation.
+
+### Parameters
+
+The following parameters will be forwarded to the webhook:
+
+- `agent_id`: The ID of the agent handling the conversation.
+- `session_id`: The ID of the session.
+- `from` (optional): The agent's associated phone number, included only if the conversation is through phone.
+- `to` (optional): The receiver's phone number, included only if the conversation is through phone.
+
+### Implementation Steps
+
+1. **Setup the Webhook Endpoint**: Create a GET HTTP endpoint on your server that will handle the webhook requests.
+2. **Configure Millis AI**:
+- In your Millis AI dashboard under Webhook setting, configure the webhook URL to point to your endpoint.
+- If you use Web SDK or APIs, set the webhook URL to parameter `extra_prompt_webhook` in Agent Config.
+3. **Data Handling**: Ensure your endpoint can handle the incoming request, process it, and return the necessary data.
+
+### Request Example
+
+Millis AI will send a GET request to your webhook URL with the following parameters:
+
+```json
+{
+  "agent_id": "abc123",
+  "session_id": "xyz789",
+  "from": "+1234567890",
+  "to": "+0987654321"
+}
+```
+
+### Response Example
+
+Your server should respond with a JSON object containing the data to be prefetched. For example:
+
+```json
+{
+  "user_name": "John Doe",
+  "account_balance": "$100"
+}
+```
+
+## End of Call Webhook
+
+The End of Call Webhook is triggered when a call or conversation ends. It allows you to log conversation details and cost breakdown on your side.
+
+### How It Works
+
+1. **Webhook Invocation**: The webhook is invoked after the conversation ends.
+2. **Data Logging**: Your server receives the conversation details and can log or process this data.
+
+### Parameters
+
+The End-of-Call Webhook will be triggered as a POST request with the following body:
+
+```json
+{
+  "chat": [
+    {
+      "role": "user/assistant/tool",
+      "content": "message"
+    }
+  ],
+  "ts": "session_start_time",
+  "duration": "session_duration",
+  "agent_config": {<config being used>},
+  "agent_id": "agent_id",
+  "chars_used": "chars_used",
+  "session_id": "session_id",
+  "cost_breakdown": [
+    {
+      "type": "millis/tts/stt/llm",
+      "credit": <credit spent>,
+      "provider": ""
+    }
+  ],
+  "voip": {
+    "from": "from_number",
+    "to": "to_number"
+  }
+}
+```
+
+### Implementation Steps
+
+1. **Setup the Webhook Endpoint**: Create an endpoint on your server to handle the webhook requests.
+2. **Configure Millis AI**:
+- In your Millis AI dashboard under Webhook setting, configure the webhook URL to point to your endpoint.
+- If you use Web SDK or APIs, set the webhook URL to parameter `session_data_webhook` in Agent Config.
+3. **Data Handling**: Ensure your endpoint can handle the incoming request, process the data, and perform necessary actions.
+
+### Request Example
+
+Millis AI will send a POST request to your webhook URL with the following structure:
+
+```json
+{
+  "chat": [
+    {
+      "role": "user",
+      "content": "Hello"
+    }
+  ],
+  "ts": "2024-08-06T12:00:00Z",
+  "duration": 300,
+  "agent_config": {},
+  "agent_id": "abc123",
+  "chars_used": 500,
+  "session_id": "xyz789",
+  "cost_breakdown": [
+    {
+      "type": "stt",
+      "credit": 123,
+      "provider": "elevenlabs"
+    },
+    {
+      "type": "llm",
+      "credit": 12,
+      "provider": "openai"
+    },
+    ...
+  ],
+  "voip": {
+    "from": "+1234567890",
+    "to": "+0987654321"
+  }
+}
+```
