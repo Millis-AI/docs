@@ -8,10 +8,13 @@ Using a WebSocket connection, your voice agent can interact in real-time with yo
 
 ### Sample Code
 
-A sample code using FastAPI websocket and asyncio.
+A sample code using FastAPI websocket and asyncio. Make sure to use the `AsyncOpenAI` client to prevent OpenAI from blocking the asyncio thread during token streaming. This ensures messages are sent immediately via websocket.
 
 ```python
+from openai import AsyncOpenAI
+
 app = FastAPI()
+client = AsyncOpenAI()
 
 @app.websocket("/llm-websocket")
 async def websocket_handler(websocket: WebSocket):
@@ -21,7 +24,7 @@ async def websocket_handler(websocket: WebSocket):
 
     async def stream_response(request):
         try:
-            for event in draft_response(request):
+            async for event in draft_response(request):
                 await websocket.send_text(json.dumps(
                     {
                         "type": "stream_response",
@@ -53,22 +56,22 @@ async def websocket_handler(websocket: WebSocket):
     except WebSocketDisconnect:
         ...
 
-def draft_response(self, request):
+async def draft_response(self, request):
     prompt = self.prepare_prompt(request)
-    stream = self.client.chat.completions.create(
+    stream = await client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=prompt,
         stream=True,
     )
 
-    for chunk in stream:
+    async for chunk in stream:
         if chunk.choices[0].delta.content is not None:
             yield {
                 "stream_id": request['stream_id'],
                 "content": chunk.choices[0].delta.content,
                 "end_of_stream": False,
             }
-    
+
     yield {
         "stream_id": request['stream_id'],
         "content": "",
