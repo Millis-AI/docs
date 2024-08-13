@@ -29,9 +29,13 @@ Millis AI server will send `start_call` event to tell your server when the conve
   "data": {
     "stream_id": <millis_stream_id>,
     "agent_id": <millis_agent_id>,
-    "call_sid": <twilio_call_sid>, // optional, None if conversation is not via Twilio phone call
+    "call_sid": <twilio_call_sid>, // optional, None if conversation is not via phone call
     "session_id": <millis_session_id>, // unique id of the call session
-    "metadata": {your own metadata} // The metadata that you add in msClient.start function
+    "metadata": {your own metadata}, // The metadata that you add in msClient.start function
+    "voip": {
+      "from": <receiver's phone number>,
+      "to": <caller's phone number>
+    } // optional, None if conversation is not via phone call
   }
 }
 ```
