@@ -16,9 +16,9 @@ Obtain your API key from your [Millis AI Account](https://app.millis.ai/settings
 
 - Method: POST
 
-- URL: 
+- URL:
 ```console
-https://api-west.millis.ai:8080/start_twilio_call
+https://api-west.millis.ai//start_outbound_call
 ```
 
 - Headers:
@@ -30,10 +30,8 @@ Authorization: YOUR_API_KEY
 
 ```json
 {
-  "init_agent": {
-    "agent_id": "your_agent_id"
-  },
-  "phone": "phone_number"
+  "from_phone": "one of your agent's phone number",
+  "to_phone": "receiver's phone number"
 }
 ```
 
@@ -50,10 +48,8 @@ Retrieve your voice agent ID from the Agent Details page on the playground.
 ### Example Request using curl
 
 ```console
-curl -X POST https://api-west.millis.ai:8080/start_twilio_call \
+curl -X POST https://api-west.millis.ai:8080/start_outbound_call \
 -H "Content-Type: application/json" \
 -H "Authorization: YOUR_API_KEY" \
--d '{"init_agent": {"agent_id": "your_agent_id"}, "phone": "phone_number"}'
+-d '{"from_phone": "+1234567890", "to_phone": "+1987654321"}'
 ```
-
-Replace `YOUR_API_KEY`, `your_agent_id`, and `phone_number` with your specific details.
