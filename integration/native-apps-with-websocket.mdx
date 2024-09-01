@@ -41,6 +41,26 @@ ws.onopen = () => {
         agent_id: "your_agent_id", // Or replace with agent_config: <config> for dynamic configuration
       }
       public_key: "your_public_key",
+      metadata: {<extra data attached to the call>}
+    }
+  };
+  ws.send(JSON.stringify(initiateMessage));
+};
+```
+
+```javascript
+ws.onopen = () => {
+  let initiateMessage = {
+    method: "initiate",
+    data: {
+      agent: {
+        agent_config: {
+          prompt: "",
+          voice: { provider: "elevenlabs", voice_id "..." }
+        }
+      }
+      public_key: "your_public_key",
+      metadata: {<extra data attached to the call>}
     }
   };
   ws.send(JSON.stringify(initiateMessage));
