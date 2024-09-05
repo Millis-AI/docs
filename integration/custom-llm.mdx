@@ -64,10 +64,15 @@ Your LLM processes the transcript and streams back the response. Indicate the en
   "data": {
     "stream_id": request['stream_id'],
     "content": "text",
-    "end_of_stream": False / True
+    "flush": true/false, // optional
+    "pause": <in ms>, // optional
+    "end_of_stream": true/false
   }
 }
 ```
+
+- `flush`: Set this to `true` to instruct the agent to immediately generate audio based on the current response. If `false`, the agent will buffer the response and generate audio only when it receives a complete sentence.
+- `pause`: Set this to a number of milliseconds to instruct the agent to pause for that long after saying the response before saying the next response.
 
 <Tip>
 - When your LLM generates a response, attach the `stream_id` from the original request so that we can keep track of which response corresponds to which request.
