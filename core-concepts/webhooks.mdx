@@ -22,8 +22,9 @@ The following parameters will be forwarded to the webhook:
 
 - `agent_id`: The ID of the agent handling the conversation.
 - `session_id`: The ID of the session.
-- `from` (optional): The agent's associated phone number, included only if the conversation is through phone.
-- `to` (optional): The receiver's phone number, included only if the conversation is through phone.
+- `from` (optional): The agent's associated phone number, included only if the conversation is through a phone call.
+- `to` (optional): The receiver's phone number, included only if the conversation is through a phone call.
+- Any key-value data that you added to the call's metadata (via the outbound API or Web SDK)
 
 ### Implementation Steps
 
@@ -35,14 +36,15 @@ The following parameters will be forwarded to the webhook:
 
 ### Request Example
 
-Millis AI will send a GET request to your webhook URL with the following parameters:
+Given you start a call with `metadata: {name: "John"}`, Millis AI will send a GET request to your webhook URL with the following parameters:
 
 ```json
 {
   "agent_id": "abc123",
   "session_id": "xyz789",
   "from": "+1234567890",
-  "to": "+0987654321"
+  "to": "+0987654321",
+  "name": "John"
 }
 ```
 
@@ -94,7 +96,8 @@ The End-of-Call Webhook will be triggered as a POST request with the following b
   "voip": {
     "from": "from_number",
     "to": "to_number"
-  }
+  },
+  "metadata": {}
 }
 ```
 
@@ -140,6 +143,9 @@ Millis AI will send a POST request to your webhook URL with the following struct
   "voip": {
     "from": "+1234567890",
     "to": "+0987654321"
+  },
+  "metadata": {
+    "name": "John"
   }
 }
 ```
