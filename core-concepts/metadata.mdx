@@ -13,7 +13,7 @@ Millis AI allows you to attach metadata to your call sessions when using the Web
 You can add metadata to a call using the Web SDK by providing the metadata as the second parameter in the `start` method. The third parameter, `include_metadata_in_prompt`, determines whether the metadata should be included in the agent’s system prompt.
 
 ```javascript
-msClient.start(agentId, { user_id: "123" }, true)
+msClient.start(<agent-id>, metadata?: object, include_metadata_in_prompt?: boolean);
 ```
 
 - The first parameter is the `agentId` or a temporary agent configuration.
