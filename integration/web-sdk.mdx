@@ -39,12 +39,13 @@ Learn more about which `endPoint` to use [HERE](https://millisai.mintlify.app/co
 First, create a voice agent from the [Playground](https://app.millis.ai/agents). Then, start a conversation with your agent using the following code:
 
 ```js
-msClient.start(<agent-id>, metadata?: {});
+msClient.start(<agent-id>, metadata?: object, include_metadata_in_prompt?: boolean);
 ```
 
 Replace `agent-id` with the ID of your agent obtained from the Playground.
 
 The `metadata` is optional. You can pass any additional data to the session, which we will forward to your custom LLM and function webhooks.
+If you provide `metadata`, you can make it available to the agent by setting `include_metadata_in_prompt` to `true`. This will include the metadata in the agent's system prompt, allowing the agent to use the data during the conversation.
 
 #### Dynamically Creating a Temporary Voice Agent
 

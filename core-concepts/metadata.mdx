@@ -22,6 +22,29 @@ msClient.start(agentId, { user_id: "123" }, true)
 
 Learn more about our Web SDK [here](/integration/web-sdk).
 
+### Using the native Websocket connection
+
+You can also attach metadata by initiating a session through a WebSocket connection. Include the metadata in the `initiate` method payload.
+
+```json
+{
+  "method": "initiate",
+  "data": {
+    "agent": {
+      "agent_id": "your_agent_id",
+      Or replace with agent_config: <config> for dynamic configuration
+    },
+    "public_key": "your_public_key",
+    "metadata": {
+      "key": "value"
+    },
+    "include_metadata_in_prompt": true
+  }
+}
+```
+
+Learn more about building native apps using websocket [here](/integration/native-apps-with-websocket).
+
 ### Using the Outbound API
 
 To add metadata using the outbound API, you need to include it in the request body when calling the `start_outbound_call` API. You can also specify whether to include the metadata in the agent’s prompt.

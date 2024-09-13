@@ -41,7 +41,10 @@ ws.onopen = () => {
         agent_id: "your_agent_id", // Or replace with agent_config: <config> for dynamic configuration
       }
       public_key: "your_public_key",
-      metadata: {<extra data attached to the call>}
+      metadata: {
+        key: value
+      }, // Optional: extra data attached to the call
+      include_metadata_in_prompt: true/false // Optional: option to include the metadata in the agent's system prompt
     }
   };
   ws.send(JSON.stringify(initiateMessage));
@@ -60,7 +63,10 @@ ws.onopen = () => {
         }
       }
       public_key: "your_public_key",
-      metadata: {<extra data attached to the call>}
+      metadata: {
+        key: value
+      }, // Optional: extra data attached to the call
+      include_metadata_in_prompt: true/false // Optional: option to include the metadata in the agent's system prompt
     }
   };
   ws.send(JSON.stringify(initiateMessage));
