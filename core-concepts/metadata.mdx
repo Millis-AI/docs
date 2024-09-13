@@ -1,0 +1,78 @@
+---
+title: 'Attach metadata to call'
+description: 'Attach metadata to your call sessions for personalized conversations'
+icon: 'memo'
+---
+
+Millis AI allows you to attach metadata to your call sessions when using the Web SDK or starting outbound calls. Metadata can include any user-specific data, such as the caller's name, user ID, or other relevant information. The system provides multiple ways to utilize this metadata during the session.
+
+## How to Add Metadata
+
+### Using the Web SDK
+
+You can add metadata to a call using the Web SDK by providing the metadata as the second parameter in the `start` method. The third parameter, `include_metadata_in_prompt`, determines whether the metadata should be included in the agent’s system prompt.
+
+```javascript
+msClient.start(agentId, { user_id: "123" }, true)
+```
+
+- The first parameter is the `agentId` or a temporary agent configuration.
+- The second parameter is the metadata you want to attach to the session.
+- The third parameter is `include_metadata_in_prompt`, which controls whether the metadata is used by the agent during the conversation.
+
+Learn more about our Web SDK [here](/integration/web-sdk).
+
+### Using the Outbound API
+
+To add metadata using the outbound API, you need to include it in the request body when calling the `start_outbound_call` API. You can also specify whether to include the metadata in the agent’s prompt.
+
+```json
+{
+  "from_phone": "one of your agent's phone number",
+  "to_phone": "receiver's phone number",
+  "metadata": {
+    "key": "value"
+  },
+  "include_metadata_in_prompt": true
+}
+```
+
+- **`from_phone`**: One of your agent's phone numbers.
+- **`to_phone`**: The phone number of the call recipient.
+- **`metadata`**: Optional. Any extra data you want to attach to the session.
+- **`include_metadata_in_prompt`**: Optional. Set to `true` to include metadata in the agent's prompt. Defaults to `false`.
+
+Learn more about Outbound Call [here](/integration/outbound-call).
+
+## How to retrieve and use Metadata
+
+The metadata will stay associated with that session throughout its lifecycle. This metadata will also be included in the following:
+- **Prefetch Data Webhook**: Metadata is forwarded during the session's prefetch data webhook which you can use to retrieve personalized data.
+- **End of Call Webhook**: Metadata is passed along at the conclusion of the call, allowing you to track and identify sessions.
+
+Learn more about the webhooks [here](/core-concepts/webhooks).
+
+### Including Metadata in the Agent's System Prompt
+
+To make metadata available to the agent during the conversation, you can enable the `include_metadata_in_prompt` configuration. When set to `true`, the metadata will be included in the agent's system prompt. This enables the agent to use the data dynamically during conversations.
+
+**Example**:
+If you include the caller’s name as part of the metadata and set `include_metadata_in_prompt = true`, the agent can greet the caller by name, creating a more personalized interaction.
+
+### Using Metadata with Custom LLMs
+
+For those using custom LLMs, you will receive the metadata in the `start_call` event, allowing you to handle it directly within your custom model logic.
+
+Learn more about Custom LLM [here](/integration/custom-llm).
+
+### Metadata and Function Calling
+
+Millis AI allows agents to use metadata during function calls by matching parameter names. When defining functions, ensure the parameter names correspond with the metadata keys. If the names match, the agent will automatically use the metadata values as the function parameters.
+
+Learn more about Agent Functions [here](/core-concepts/functions).
+
+**Example**:
+If you add `user_id = X` to the session metadata, and you define a function with a parameter named `user_id`, the agent will use `X` as the value for that parameter during the function call.
+
+This feature helps ensure that relevant information from the metadata is accessible during complex interactions, such as processing requests or retrieving user-specific data.
+

@@ -40,6 +40,7 @@
         "core-concepts/agent",
         "core-concepts/functions",
         "core-concepts/webhooks",
+        "core-concepts/metadata",
         "core-concepts/regions"
       ]
     },
