@@ -1,0 +1,113 @@
+---
+title: 'WebRTC'
+description: "Connect audio sources directly to Millis agents via WebRTC"
+icon: 'code'
+---
+
+## Overview
+
+Millis AI supports WebRTC integration, allowing users to connect their audio sources directly to Millis agents via WebRTC. This integration is ideal for a variety of applications, including:
+- **Phone systems** with WebRTC capabilities
+- **Voice agents in video conferencing platforms** (e.g., Zoom, Google Meet) to interact with participants via voice
+- **VoIP systems** that leverage WebRTC for real-time communication
+
+Millis AI enables users to build intelligent voice agents that can join these platforms, engage in conversations, and assist participants via voice interactions.
+
+## Requirements
+
+To connect your phone system, video conferencing platform, or VoIP solution to Millis AI via WebRTC, ensure that:
+1. Your system supports **WebRTC** for audio transmission.
+2. You have a valid **agent_id** to route calls or streams to the correct Millis agent.
+3. You have a **private key** for authenticating requests to Millis.
+
+## API Endpoint
+
+To initiate a WebRTC session, your system sends a WebRTC **offer** to Millis through the following API endpoint:
+
+### **POST /webrtc/offer**
+
+This API is used to send the WebRTC offer to Millis, where it will be processed, and a WebRTC **answer** will be returned to complete the connection.
+
+### Request Headers:
+- **Authorization**: Bearer token containing the **private key** to authenticate the request.
+- **Content-Type**: `application/json`
+
+### Request Body:
+The request body contains the following fields:
+
+| Field     | Type   | Description                                                                 |
+|-----------|--------|-----------------------------------------------------------------------------|
+| `agent_id`| String | The ID of the Millis agent to handle the call or stream.                     |
+| `offer`   | Object | The WebRTC offer details, containing `sdp` and `type`.                       |
+
+#### `offer` Object:
+| Field     | Type   | Description                                                                 |
+|-----------|--------|-----------------------------------------------------------------------------|
+| `sdp`     | String | The WebRTC offer's session description protocol (SDP).                       |
+| `type`    | String | Type of the WebRTC request (typically "offer").                              |
+
+#### Example Request:
+```json
+{
+  "agent_id": "123456",
+  "offer": {
+    "sdp": "v=0\no=- 2566784789543948235 2 IN IP4 127.0.0.1...",
+    "type": "offer"
+  }
+}
+```
+
+### Example cURL Command:
+```bash
+curl -X POST https://api-west.millis.ai/webrtc/offer \
+  -H "Authorization: <your-private-key-here>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "123456",
+    "offer": {
+      "sdp": "v=0\no=- 2566784789543948235 2 IN IP4 127.0.0.1...",
+      "type": "offer"
+    }
+  }'
+```
+
+### Response:
+If the offer is valid, the API will respond with a WebRTC **answer** that can be used to complete the connection between your system and Millis.
+
+#### Example Response:
+```json
+{
+  "answer": {
+    "sdp": "v=0\no=- 9876543210987654321 2 IN IP4 127.0.0.1...",
+    "type": "answer"
+  }
+}
+```
+
+### Establish connection and start streaming:
+
+1. **Set the Remote Description**: Use the `sdp` from the answer to set the remote description on your WebRTC client.
+   - Example (JavaScript/WebRTC):
+     ```javascript
+     peerConnection.setRemoteDescription(new RTCSessionDescription({
+       type: 'answer',
+       sdp: 'v=0\no=- 9876543210987654321 2 IN IP4 127.0.0.1...'
+     }));
+     ```
+
+2. **Complete ICE Candidate Exchange**: Ensure that ICE candidates are exchanged between your client and Millis to establish the media path.
+
+3. **Start Media Transmission**: After completing SDP and ICE negotiations, audio will start flowing between your system and the Millis agent.
+
+---
+
+## Use Cases
+
+### 1. **Phone Systems with SIP and WebRTC**
+   - Route incoming calls from DID numbers through Millis AI for real-time voice interaction, using WebRTC for media transmission.
+
+### 2. **Voice Agents in Video Conferencing Tools**
+   - Connect voice agents to video conferencing platforms such as Zoom, Google Meet, and others. The voice agent can join calls and engage in real-time audio conversations with participants, providing support, answering questions, or automating workflows.
+
+### 3. **Connecting Agents to Virtual Rooms**
+   - Millis agents can be connected to virtual communication rooms via WebRTC, interacting with users in the room to provide assistance, answer questions, or drive conversations through audio.

@@ -52,7 +52,8 @@
         "integration/native-apps-with-websocket",
         "integration/embeddable-call-widget",
         "integration/inbound-call",
-        "integration/outbound-call"
+        "integration/outbound-call",
+        "integration/webrtc"
       ]
     },
     {
