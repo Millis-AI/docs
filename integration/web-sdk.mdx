@@ -188,6 +188,21 @@ msClient.stop();
 - `payload` - An object containing additional information.
   - `is_final` (optional) - A boolean indicating if the transcript text is final.
 
+### `onfunction`
+
+**Description:** Emitted when agent triggered a function call.
+
+**Callback Signature:**
+```typescript
+'onfunction': (text: string, payload: { name: string, params: object }) => void;
+```
+
+**Parameters:**
+- `text` - Empty.
+- `payload` - Information about the triggered function.
+  - `name` - The function name.
+  - `params` - The params being used in the function call.
+
 ### `analyzer`
 
 **Description:** Emitted with an `AnalyserNode` for agent's audio analysis.
