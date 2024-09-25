@@ -53,7 +53,8 @@
         "integration/embeddable-call-widget",
         "integration/inbound-call",
         "integration/outbound-call",
-        "integration/webrtc"
+        "integration/webrtc",
+        "integration/sip"
       ]
     },
     {

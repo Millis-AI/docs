@@ -1,0 +1,58 @@
+---
+title: 'SIP Trunking'
+description: "Connecting Phone Numbers to Millis via SIP"
+icon: 'code'
+---
+
+# Overview
+
+Millis provides seamless integration for connecting your phone system to its AI-powered voice agents using SIP. This guide walks you through the process of rerouting phone calls to Millis via SIP.
+
+# Step-by-Step Process
+
+## 1. Make a POST Request to `/register_sip_call`
+
+To initiate a call, send a POST request to the `/register_sip_call` API endpoint. Depending on your location, select either the **EU-West** or **US-West** region for lower latency:
+
+- **EU-West:** `https://api-eu-west.millis.ai/register_sip_call`
+- **US-West:** `https://api-west.millis.ai/register_sip_call`
+
+### Request Body
+You must include the necessary parameters in your request body, with the option to customize agent behavior and include metadata if needed.
+
+**Request Body Example:**
+```json
+{
+  "agent_id": "your_agent_id",
+  "agent_config": {
+    config options for the agent
+  },
+  "metadata": {
+    "key": "value"
+  },
+  "include_metadata_in_prompt": true
+}
+```
+
+**Field Details:**
+
+- `agent_id`: *(Optional)* The ID of the Millis AI agent that will handle the call.
+- `agent_config`: *(Optional)* Configuration options for the agent, allowing you to customize behavior.
+    - If both `agent_id` and `agent_config` are provided, the parameters in `agent_config` will override the original parameters for the agent tied to `agent_id`.
+    - You can also provide just `agent_config` for a temporary configuration, which will be used to construct an agent to handle the call.
+- `metadata`: *(Optional)* Any additional information to attach to the session, giving the agent context to enhance its response. To learn more about how metadata works, visit the [Metadata Guide](#).
+- `include_metadata_in_prompt`: *(Optional)* Boolean value indicating if the metadata should be included in the agent's conversational prompt.
+
+# 2. Receive the SIP URI
+After making the POST request, you will receive a response containing a `call_id` and a `sip_uri`. This `sip_uri` is the address you will use to route your phone calls to Millis.
+
+**Response Example:**
+```json
+{
+  "call_id": "unique_call_id",
+  "sip": "sip:call-uniqueid@<millis-sip-server>"
+}
+```
+
+# 3. Reroute Your Call
+Use the provided `sip_uri` to reroute the call from your phone system to Millis. Your phone system will forward the call audio to Millis, where the voice agent can interact with the caller.
