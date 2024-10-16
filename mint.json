@@ -41,6 +41,7 @@
         "core-concepts/functions",
         "core-concepts/webhooks",
         "core-concepts/metadata",
+        "core-concepts/variables",
         "core-concepts/regions"
       ]
     },

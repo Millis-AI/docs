@@ -1,0 +1,32 @@
+---
+title: 'Dynamic Variables'
+description: 'Dynamic Variables in Call Sessions'
+icon: 'memo'
+---
+
+# What Are Variables?
+
+Variables are pieces of data that can be dynamically inserted during call sessions. They can now be embedded within different parts of a call flow, including prompts, agent messages, webhook parameters, and function calls. This flexibility allows developers to build richer and more responsive interactions for their agents.
+
+In every call, there are predefined variables like `FromPhone` and `ToPhone` (representing the originating and receiving phone numbers for phone calls). Additionally, you can utilize any key-value pairs from the metadata that you provide for the call.
+
+For example, if you include custom information like `customerID`, `appointmentTime`, or any other data that you may want to reference throughout the call, these can now be easily used.
+
+# How to Use Variables
+
+Millis supports a simple syntax for using variables. Just wrap the variable name in curly braces like `{<variable>}`, and our system will automatically replace it with the corresponding value during the call. Here are a few examples:
+
+- To fetch the caller info by number: Use `{FromPhone}` as the description of the function's param.”
+- To greet the caller by name via metadata: Set agent's greeting line to be “Hi `{userName}! How can I assist you today?`.”
+- Webhook parameters: You can add variables as parameters in a webhook, such as `phone_number={FromPhone}`.
+
+### Default and Dynamic Variables
+Millis offers both default variables and dynamic variables for customizing call sessions:
+
+- **Default Variables** (Special Variables): These are system-provided variables such as `FromPhone` and `ToPhone`, which represent the caller's phone number and the receiving phone number, respectively, when the call is made via a phone network.
+- **Dynamic Variables**: These are custom key-value pairs that you provide as metadata when starting a call. You can use any metadata as a variable within prompts, messages, function calls, or webhook parameters.
+
+### Examples of How to Use Variables
+- **For Function Calls**: Put `{<variable>}` in the description of the parameter. For instance, if the parameter name is `phone_number`, you can set the parameter description to `{FromPhone}` to automatically include the caller's phone number.
+![Use variable in param](/images/variable-param.png)
+- **For Agent Messages**: Add `{userName: <real user name>}` to metadata, then set the agent's greeting line to: `Hi {userName}! How can I help you?`. This can also be applied to the agent's prompt.
