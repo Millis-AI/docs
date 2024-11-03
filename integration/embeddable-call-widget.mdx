@@ -10,7 +10,7 @@ The widget includes a button to start and stop interactions and features an anim
 
 ## Steps to Embed the Voice Agent Call Widget
 
-#### Step 1: Create your voice agent 
+#### Step 1: Create your voice agent
 
 #### Step 2. Obtain the widget embeddable code
 
@@ -28,3 +28,29 @@ With the HTML code, you can place it anywhere in your web app to embed the widge
 ![Embed Widget Step 3](/images/embed-3.png)
 - Paste the HTML code provided above, then click 'Save'.
 ![Embed Widget Step 4](/images/embed-4.png)
+
+## Adding Metadata via URL Parameters
+
+You can customize each widget session by adding URL parameters that will be passed as metadata. This allows you to provide context-specific information to your voice agent.
+
+### Example Usage
+
+You can add metadata parameters like this:
+
+```html
+https://app.millis.ai/agents/embedded?id=XXXX&k=YYYYYY&userName=John&userType=premium
+```
+
+These parameters will be automatically converted into metadata for the session, allowing your agent to access this information during the conversation. You can reference this metadata using [variables](/core-concepts/variables) in your agent's prompts or function calls.
+
+### Common Use Cases
+
+- Adding user identification information
+- Passing context about the page or section where the widget is embedded
+- Providing custom configuration parameters for the conversation
+
+<Tip>
+Remember that any metadata added via URL parameters will be visible in the URL. Don't include sensitive information this way.
+</Tip>
+
+Learn more about how metadata works in Millis AI [here](/core-concepts/metadata).

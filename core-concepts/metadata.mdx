@@ -8,7 +8,16 @@ Millis AI allows you to attach metadata to your call sessions when using the Web
 
 ## How to Add Metadata
 
-### Using the Web SDK
+### 1. Via URL Parameters (Embedded Widget)
+When using the embeddable call widget, you can add metadata directly through URL parameters:
+
+```url
+https://app.millis.ai/agents/embedded?id=XXXX&k=YYYYYY&userName=John&userType=premium
+```
+
+Any query parameters added to the widget URL will automatically become metadata for that session.
+
+### 2. Using the Web SDK
 
 You can add metadata to a call using the Web SDK by providing the metadata as the second parameter in the `start` method. The third parameter, `include_metadata_in_prompt`, determines whether the metadata should be included in the agent’s system prompt.
 
@@ -22,7 +31,7 @@ msClient.start(<agent-id>, metadata?: object, include_metadata_in_prompt?: boole
 
 Learn more about our Web SDK [here](/integration/web-sdk).
 
-### Using the native Websocket connection
+### 3. Using the native Websocket connection
 
 You can also attach metadata by initiating a session through a WebSocket connection. Include the metadata in the `initiate` method payload.
 
@@ -45,7 +54,7 @@ You can also attach metadata by initiating a session through a WebSocket connect
 
 Learn more about building native apps using websocket [here](/integration/native-apps-with-websocket).
 
-### Using the Outbound API
+### 4. Using the Outbound API
 
 To add metadata using the outbound API, you need to include it in the request body when calling the `start_outbound_call` API. You can also specify whether to include the metadata in the agent’s prompt.
 
@@ -75,27 +84,18 @@ The metadata will stay associated with that session throughout its lifecycle. Th
 
 Learn more about the webhooks [here](/core-concepts/webhooks).
 
-### Including Metadata in the Agent's System Prompt
+### Use Metadata as Variables
 
-To make metadata available to the agent during the conversation, you can enable the `include_metadata_in_prompt` configuration. When set to `true`, the metadata will be included in the agent's system prompt. This enables the agent to use the data dynamically during conversations.
+Any metadata you attach to a call session can be used as dynamic variables throughout your call flow. Variables can be referenced in agent prompts, messages, webhook parameters, and function calls using the `{variableName}` syntax.
 
-**Example**:
-If you include the caller’s name as part of the metadata and set `include_metadata_in_prompt = true`, the agent can greet the caller by name, creating a more personalized interaction.
+For example, if you add metadata like:
+```json
+{
+  "userName": "John",
+  "userType": "premium"
+}
+```
 
-### Using Metadata with Custom LLMs
+You can reference these values using `{userName}` or `{userType}` in various places during the call.
 
-For those using custom LLMs, you will receive the metadata in the `start_call` event, allowing you to handle it directly within your custom model logic.
-
-Learn more about Custom LLM [here](/integration/custom-llm).
-
-### Metadata and Function Calling
-
-Millis AI allows agents to use metadata during function calls by matching parameter names. When defining functions, ensure the parameter names correspond with the metadata keys. If the names match, the agent will automatically use the metadata values as the function parameters.
-
-Learn more about Agent Functions [here](/core-concepts/functions).
-
-**Example**:
-If you add `user_id = X` to the session metadata, and you define a function with a parameter named `user_id`, the agent will use `X` as the value for that parameter during the function call.
-
-This feature helps ensure that relevant information from the metadata is accessible during complex interactions, such as processing requests or retrieving user-specific data.
-
+For detailed information about using variables, including syntax and examples, see our [Variables documentation](/core-concepts/variables).
