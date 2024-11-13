@@ -34,12 +34,31 @@ Learn more about which `endPoint` to use [HERE](https://millisai.mintlify.app/co
 
 ### 3. Start a Conversation:
 
+Starting from version 1.0.15, use the following format to initiate a call:
+```js
+msClient.start({
+  agent: {
+    agent_id: agentId,          // Optionally pass agent_id
+    agent_config: {}            // Optionally pass agent_config
+  },
+  metadata: {},                 // Optional metadata for personalized context
+  include_metadata_in_prompt: true/false,  // Optional flag to include metadata in prompt
+  session_continuation: { // Optional session ID for continuation
+    session_id: "<previous session id>"
+  }
+});
+```
+
 #### Using a Predefined Agent
 
 First, create a voice agent from the [Playground](https://app.millis.ai/agents). Then, start a conversation with your agent using the following code:
 
 ```js
-msClient.start(<agent-id>, metadata?: object, include_metadata_in_prompt?: boolean);
+msClient.start({
+  agent: {
+    agent_id: <agent-id>
+  }
+});
 ```
 
 Replace `agent-id` with the ID of your agent obtained from the Playground.
@@ -53,37 +72,56 @@ You can also dynamically create a temporary voice agent with custom configuratio
 
 ```js
 msClient.start({
-  prompt: "You're a helpful assistant.", // Example prompt
-  voice: {
-    provider: "elevenlabs", // Voice provider
-    voice_id: "voice-id" // Replace 'voice-id' with the ID of the desired voice
-  },
-  language: "<language_code>", // optional - use language code such as en, es
-  tools: [
-    {
-      name: "get_user_data",
-      description: "",
-      webhook: "https://...",
-      header: {
-        "Content-Type": "application/json",
-        "Authorization": ""
+  agent: {
+    agent_config: {
+      prompt: "You're a helpful assistant.", // Example prompt
+      voice: {
+        provider: "elevenlabs", // Voice provider
+        voice_id: "voice-id" // Replace 'voice-id' with the ID of the desired voice
       },
-      params: [
+      language: "<language_code>", // optional - use language code such as en, es
+      tools: [
         {
-          name: "",
-          type: "string" | "number" | "boolean",
+          name: "get_user_data",
           description: "",
-          required: true
+          webhook: "https://...",
+          header: {
+            "Content-Type": "application/json",
+            "Authorization": ""
+          },
+          params: [
+            {
+              name: "",
+              type: "string" | "number" | "boolean",
+              description: "",
+              required: true
+            }
+          ]
         }
-      ]
+      ], // Replace with actual function calls you need
+      custom_llm_websocket: "wss://...", // optional - enable custom llm
+      llm: "", // optional - choose llm model. Ex: gpt-4o, llama-3-70b
     }
-  ], // Replace with actual function calls you need
-  custom_llm_websocket: "wss://...", // optional - enable custom llm
-  llm: "", // optional - choose llm model. Ex: gpt-4o, llama-3-70b
-}, metadata: {});
+  }
+});
 ```
 
 To obtain the voice_id, use this API to acquire the complete list of voices: https://api-west.millis.ai:8080/voices
+
+#### Overriding Agent configuration
+
+When both `agent_id` and `agent_config` are provided, the session will use the configuration associated with `agent_id` but will override it with any settings provided in `agent_config`. This option allows for minor modifications to the agent’s default configuration on a per-session basis.
+
+#### Additional Parameters
+
+##### Metadata
+- **`metadata`**: Optional field to pass any additional information that may personalize the conversation. It can be used by the agent if `include_metadata_in_prompt` is set to `true`.
+
+##### Including Metadata in Prompt
+- **`include_metadata_in_prompt`**: Boolean flag (`true` or `false`). If `true`, the metadata provided will be included in the prompt to give context to the agent.
+
+##### Session Continuation
+- **`session_continuation`**: Provide `session_id` from a previous session to enable continuity in conversation. This allows the agent to reference previous interactions.
 
 ### 4. Stop a Conversation:
 
