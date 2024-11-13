@@ -1,0 +1,91 @@
+---
+title: 'Session Continuation'
+description: 'Allow agent to continue past conversations with users'
+icon: 'memo'
+---
+
+Millis AI’s Session Continuation feature enables agents to leverage previous interaction data, allowing users to continue conversations seamlessly from prior sessions. By passing a `session_id`, agents can access past context, enhancing engagement and providing a personalized experience for users.
+
+---
+
+## Important Note on Data Opt-Out
+
+**Warning**: Session Continuation is only available if **Data Opt-Out is disabled**.
+When Data Opt-Out is enabled, Millis does not retain call history, so agent can't retrieve data from previous sessions. Ensure that Data Opt-Out is disabled if you require session continuation for your users.
+
+---
+
+## How to Pass `session_id` for Session Continuation
+
+### 1. **Web SDK Integration**
+To enable session continuation using the Millis Web SDK, use the `msClient.start` method:
+
+```javascript
+msClient.start({
+  agent: {
+    agent_id: agentId
+  },
+  session_continuation: {
+    session_id: "<previous session id>"
+  }
+});
+```
+
+---
+
+### 2. **Native Integration via WebSocket**
+To continue a session via WebSocket, include the `session_id` in the `initiate` event:
+
+```json
+{
+  "method": "initiate",
+  "data": {
+    "agent": {
+      "agent_id": "your_agent_id",
+      // or for dynamic configuration
+      "agent_config": "<config>"
+    },
+    "public_key": "your_public_key",
+    "metadata": {
+      "key": "value"
+    },
+    "include_metadata_in_prompt": true,
+    "session_continuation": {
+      "session_id": "<previous session id>"
+    }
+  }
+}
+```
+
+---
+
+### 3. **Outbound Call API Integration**
+For outbound calls, the `session_id` is included in the request body when calling the `start_outbound_call` API.
+
+#### Example Request
+```json
+{
+  "from_phone": "your_agent_phone_number",
+  "to_phone": "receiver_phone_number",
+  "metadata": {
+    "key": "value"
+  },
+  "include_metadata_in_prompt": true,
+  "session_continuation": {
+    "session_id": "<previous session id>"
+  }
+}
+```
+
+---
+
+## Example Scenarios
+
+1. **Follow-Up Customer Support Calls**: A returning customer can pick up from a previous conversation by including the `session_id`, reducing the need to re-explain their issue.
+2. **Ongoing Campaigns**: In multi-stage campaigns, `session_id` helps track each caller's journey, creating a more cohesive experience.
+3. **Consultations**: Advisors can use session continuation to reference past discussions, fostering a more personalized relationship.
+
+---
+
+## Future Enhancements
+- **User Identification:** Upcoming features will allow sessions to continue based on `user_id`, `phone`, or similar identifiers, adding memory across sessions without requiring a `session_id`.
