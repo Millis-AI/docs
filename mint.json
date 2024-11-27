@@ -26,6 +26,13 @@
     "name": "Dashboard",
     "url": "https://app.millis.ai"
   },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "openapi": "https://api-west.millis.ai/openapi.json",
+      "url": "api-reference"
+    }
+  ],
   "navigation": [
     {
       "group": "Overview",
@@ -71,6 +78,86 @@
         "tutorials/webhook-function-call-api",
         "tutorials/integrate-function-call-with-make.com",
         "tutorials/setup-custom-llm-websocket"
+      ]
+    },
+    {
+      "group": "Call Management",
+      "pages": [
+        "api-reference/endpoint/call-management/register-call",
+        "api-reference/endpoint/call-management/register-sip-call",
+        "api-reference/endpoint/call-management/terminate-call-session",
+        "api-reference/endpoint/call-management/start-outbound-call"
+      ]
+    },
+    {
+      "group": "Connectivity",
+      "pages": [
+        "api-reference/endpoint/connectivity/create-sip",
+        "api-reference/endpoint/connectivity/delete-sip",
+        "api-reference/endpoint/connectivity/create-a-webrtc-offer"
+      ]
+    },
+    {
+      "group": "Phones",
+      "pages": [
+        "api-reference/endpoint/phones/set-phone-agent",
+        "api-reference/endpoint/phones/get-phones",
+        "api-reference/endpoint/phones/get-phone"
+      ]
+    },
+    {
+      "group": "Conversational AI",
+      "pages": [
+        "api-reference/endpoint/conversational-ai/chat-completions"
+      ]
+    },
+    {
+      "group": "Agents",
+      "pages": [
+        "api-reference/endpoint/agents/get-agents",
+        "api-reference/endpoint/agents/create-agent",
+        "api-reference/endpoint/agents/get-agent",
+        "api-reference/endpoint/agents/update-agent",
+        "api-reference/endpoint/agents/delete-agent",
+        "api-reference/endpoint/agents/duplicate-agent",
+        "api-reference/endpoint/agents/get-call-histories",
+        "api-reference/endpoint/agents/set-embed-config"
+      ]
+    },
+    {
+      "group": "Call Logs",
+      "pages": [
+        "api-reference/endpoint/call-logs/get-call-history",
+        "api-reference/endpoint/call-logs/delete-call-recording"
+      ]
+    },
+    {
+      "group": "Voices",
+      "pages": [
+        "api-reference/endpoint/voices/get-voices",
+        "api-reference/endpoint/voices/get-custom-voices"
+      ]
+    },
+    {
+      "group": "Knowledge Base",
+      "pages": [
+        "api-reference/endpoint/knowledge-base/generate-presigned-url",
+        "api-reference/endpoint/knowledge-base/create-file",
+        "api-reference/endpoint/knowledge-base/delete-file",
+        "api-reference/endpoint/knowledge-base/set-agent-files"
+      ]
+    },
+    {
+      "group": "Campaigns",
+      "pages": [
+        "api-reference/endpoint/campaigns/get-all-campaigns",
+        "api-reference/endpoint/campaigns/create-campaign",
+        "api-reference/endpoint/campaigns/upload-records",
+        "api-reference/endpoint/campaigns/set-caller",
+        "api-reference/endpoint/campaigns/start-campaign",
+        "api-reference/endpoint/campaigns/stop-campaign",
+        "api-reference/endpoint/campaigns/get-campaign",
+        "api-reference/endpoint/campaigns/delete-campaign"
       ]
     }
   ]
