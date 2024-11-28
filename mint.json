@@ -45,6 +45,7 @@
       "group": "Core Concepts",
       "pages": [
         "core-concepts/agent",
+        "core-concepts/agent-config",
         "core-concepts/functions",
         "core-concepts/webhooks",
         "core-concepts/metadata",
