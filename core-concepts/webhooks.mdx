@@ -4,148 +4,183 @@ description: 'Millis AI Webhooks Documentation'
 icon: 'memo'
 ---
 
-Millis AI offers two primary webhooks for enhancing and customizing your voice agent interactions. These webhooks allow you to integrate external systems and processes seamlessly with your Millis AI implementation.
+Millis AI provides flexible webhooks to enhance integration capabilities. This documentation explains the purpose, format, and fields for the **Prefetch Data Webhook** and **End-of-Call Webhook**.
 
-## Prefetch Data Webhook
+---
 
-The Prefetch Data Webhook allows you to provide the voice agent with necessary data before the conversation starts. This can help personalize interactions and improve the efficiency of your voice agent.
+## **1. Prefetch Data Webhook**
+**Configuration Key in Agent Config**: `extra_prompt_webhook`
 
-### How It Works
+The Prefetch Data Webhook is called before the conversation begins. It enables real-time customization and event notifications.
 
-1. **Webhook Invocation**: The webhook is invoked before the conversation begins.
-2. **Data Retrieval**: Your server retrieves and processes the required data.
-3. **Response to Millis AI**: The retrieved data is sent back to Millis AI, where it can be used during the conversation.
-
-### Parameters
-
-The following parameters will be forwarded to the webhook:
-
-- `agent_id`: The ID of the agent handling the conversation.
-- `session_id`: The ID of the session.
-- `from` (optional): The agent's associated phone number, included only if the conversation is through a phone call.
-- `to` (optional): The receiver's phone number, included only if the conversation is through a phone call.
-- Any key-value data that you added to the call's metadata (via the outbound API or Web SDK)
-
-### Implementation Steps
-
-1. **Setup the Webhook Endpoint**: Create a GET HTTP endpoint on your server that will handle the webhook requests.
-2. **Configure Millis AI**:
-- In your Millis AI dashboard under Webhook setting, configure the webhook URL to point to your endpoint.
-- If you use Web SDK or APIs, set the webhook URL to parameter `extra_prompt_webhook` in Agent Config.
-3. **Data Handling**: Ensure your endpoint can handle the incoming request, process it, and return the necessary data.
-
-### Request Example
-
-Given you start a call with `metadata: {name: "John"}`, Millis AI will send a GET request to your webhook URL with the following parameters:
-
+### Configuration
+The configuration can be provided in one of the following formats:
+- **String**: The URL of the webhook endpoint.
+- **Object**:
 ```json
 {
-  "agent_id": "abc123",
-  "session_id": "xyz789",
-  "from": "+1234567890",
-  "to": "+0987654321",
-  "name": "John"
-}
-```
-
-### Response Example
-
-Your server should respond with a JSON object containing the data to be prefetched. For example:
-
-```json
-{
-  "user_name": "John Doe",
-  "account_balance": "$100"
-}
-```
-
-## End of Call Webhook
-
-The End of Call Webhook is triggered when a call or conversation ends. It allows you to log conversation details and cost breakdown on your side.
-
-### How It Works
-
-1. **Webhook Invocation**: The webhook is invoked after the conversation ends.
-2. **Data Logging**: Your server receives the conversation details and can log or process this data.
-
-### Parameters
-
-The End-of-Call Webhook will be triggered as a POST request with the following body:
-
-```json
-{
-  "chat": [
-    {
-      "role": "user/assistant/tool",
-      "content": "message"
-    }
-  ],
-  "ts": "session_start_time",
-  "duration": "session_duration",
-  "agent_config": {<config being used>},
-  "agent_id": "agent_id",
-  "chars_used": "chars_used",
-  "session_id": "session_id",
-  "cost_breakdown": [
-    {
-      "type": "millis/tts/stt/llm",
-      "credit": <credit spent>,
-      "provider": ""
-    }
-  ],
-  "voip": {
-    "from": "from_number",
-    "to": "to_number"
-  },
-  "metadata": {}
-}
-```
-
-### Implementation Steps
-
-1. **Setup the Webhook Endpoint**: Create an endpoint on your server to handle the webhook requests.
-2. **Configure Millis AI**:
-- In your Millis AI dashboard under Webhook setting, configure the webhook URL to point to your endpoint.
-- If you use Web SDK or APIs, set the webhook URL to parameter `session_data_webhook` in Agent Config.
-3. **Data Handling**: Ensure your endpoint can handle the incoming request, process the data, and perform necessary actions.
-
-### Request Example
-
-Millis AI will send a POST request to your webhook URL with the following structure:
-
-```json
-{
-  "chat": [
-    {
-      "role": "user",
-      "content": "Hello"
-    }
-  ],
-  "ts": "2024-08-06T12:00:00Z",
-  "duration": 300,
-  "agent_config": {},
-  "agent_id": "abc123",
-  "chars_used": 500,
-  "session_id": "xyz789",
-  "cost_breakdown": [
-    {
-      "type": "stt",
-      "credit": 123,
-      "provider": "elevenlabs"
-    },
-    {
-      "type": "llm",
-      "credit": 12,
-      "provider": "openai"
-    },
-    ...
-  ],
-  "voip": {
-    "from": "+1234567890",
-    "to": "+0987654321"
-  },
-  "metadata": {
-    "name": "John"
+  "url": "endpoint",
+  "headers": {
+    "key": "value"
   }
 }
 ```
+
+### **Use Cases**
+1. **Call Notification**: Notify your system about an incoming call by receiving a webhook event.
+2. **Metadata Override**: Dynamically override or add session metadata based on external systems.
+3. **Extra Prompt**: Provide additional context to the agent's system prompt.
+
+### **Request**
+- **Method**: `GET`
+- **Query Parameters**:
+  - `session_id` (string): Unique session identifier.
+  - `agent_id` (string): ID of the agent handling the session.
+  - `from` (string): Caller’s phone number (if applicable).
+  - `to` (string): Receiver’s phone number (if applicable).
+  - Additional session metadata as key-value pairs (if available).
+
+### **Expected Response**
+- **Content-Type**: `application/json`.
+- **Response Fields**:
+  - **`metadata` (object)**: Overrides or extends the current session metadata. Existing keys are updated, and new keys are added.
+  - **`extra_prompt` (string)**: Additional text appended to the agent’s system prompt.
+
+### **Response Example**
+```json
+{
+  "metadata": {
+    "customer_tier": "premium",
+    "location": "California"
+  },
+  "extra_prompt": "The caller is a premium customer from California."
+}
+```
+
+---
+
+## **2. End-of-Call Webhook**
+**Configuration Key in Agent Config**: `session_data_webhook`
+
+The End-of-Call Webhook is triggered after a session concludes. It provides detailed information about the session for logging, analytics, or post-call processing.
+
+### Configuration
+The configuration can be provided in one of the following formats:
+- **String**: The URL of the webhook endpoint.
+- **Object**:
+```json
+{
+  "url": "endpoint",
+  "headers": {
+    "key": "value"
+  }
+}
+```
+
+### **Request**
+- **Method**: `POST`
+- **Payload** (JSON):
+  - **`chat` (string)**: JSON string representing the chat history (user and agent messages).
+  - **`function_calls` (array)**: List of external functions invoked during the session.
+  - **`ts` (timestamp)**: Session start time.
+  - **`duration` (integer)**: Session duration in seconds.
+  - **`agent_config` (object)**: Serialized agent configuration.
+  - **`agent_id` (string)**: ID of the agent managing the session.
+  - **`call_id` (string)**: Unique identifier for the call session.
+  - **`chars_used` (integer)**: Number of characters processed during the session.
+  - **`session_id` (string)**: Unique session identifier.
+  - **`cost_breakdown` (array)**: List of cost components for different services.
+    ```json
+    [
+      {
+        "type": "stt",
+        "provider": "millis",
+        "credit": 0.0043
+      },
+      {
+        "type": "tts",
+        "provider": "elevenlabs",
+        "credit": 0.03
+      }
+    ]
+    ```
+  - **`voip` (object)**: Telephony details.
+    ```json
+    {
+      "provider": "twilio",
+      "from": "+1234567890",
+      "to": "+0987654321"
+    }
+    ```
+  - **`recording` (object)**: Call recording details.
+    ```json
+    {
+      "recording_url": "https://your-recording-url.com/recording123"
+    }
+    ```
+  - **`metadata` (object)**: Final metadata for the session.
+  - **`call_status` (string)**: Status of the call. Possible values:
+    - `user-ended`
+    - `api-ended`
+    - `voicemail-message`
+    - `voicemail-hangup`
+    - `agent-ended`
+    - `timeout`
+    - `error`
+    - `chat_completion`
+  - **`error_message` (string)**: Description of any errors encountered during the session.
+
+### **Example**
+**Request URL**:
+```http
+POST https://your-webhook-url.com/session-data
+```
+
+**Payload**:
+```json
+{
+  "chat": "[{\"role\": \"user\", \"content\": \"Hi, I'd like to book a flight.\"}, {\"role\": \"assistant\", \"content\": \"Sure! Can you provide the destination and date?\"}]",
+  "function_calls": [{'name': 'check_status', 'params': {'check': 'true', 'order_id': 6689, 'session_id': '-OA1XVnwRGpaameIakJb'}}],
+  "ts": 1729840680.886249,
+  "duration": 300,
+  "agent_config": {...},
+  "agent_id": "agent001",
+  "call_id": "call123",
+  "chars_used": 1024,
+  "session_id": "session123",
+  "cost_breakdown": [
+    {
+      "type": "stt",
+      "provider": "millis",
+      "credit": 0.05
+    }
+  ],
+  "voip": {
+    "provider": "twilio",
+    "from": "+1234567890",
+    "to": "+0987654321"
+  },
+  "recording": {
+    "recording_url": "https://your-recording-url.com/recording123"
+  },
+  "metadata": {
+    "customer_tier": "gold"
+  },
+  "call_status": "user-ended",
+  "error_message": null
+}
+```
+
+---
+
+## **Notes**
+1. **Prefetch Webhook**:
+   - Use this webhook to notify your system about calls, adjust metadata dynamically, or provide extra prompts to enhance conversational context.
+2. **End-of-Call Webhook**:
+   - Designed for detailed post-call analytics and tracking.
+   - Ensure secure storage of sensitive information like call recordings and metadata.
+3. **Security**:
+   - Use HTTPS for all webhooks.
+   - Authenticate requests with headers or API keys as needed.
+
+These webhooks provide a robust way to integrate Millis AI into your existing systems, offering flexibility and advanced customization for voice agent interactions.
