@@ -31,6 +31,10 @@
       "name": "API Reference",
       "openapi": "https://api-west.millis.ai/openapi.json",
       "url": "api-reference"
+    },
+    {
+      "name": "Tutorials",
+      "url": "tutorials"
     }
   ],
   "navigation": [
@@ -78,7 +82,8 @@
       "pages": [
         "tutorials/webhook-function-call-api",
         "tutorials/integrate-function-call-with-make.com",
-        "tutorials/setup-custom-llm-websocket"
+        "tutorials/setup-custom-llm-websocket",
+        "tutorials/create-voice-agent-for-appointment-scheduling"
       ]
     },
     {
