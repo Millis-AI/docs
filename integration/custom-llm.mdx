@@ -79,6 +79,39 @@ Your LLM processes the transcript and streams back the response. Indicate the en
 - For the first message that your server sends after receiving the `start_call` event, use the `stream_id` from the `start_call` event.
 </Tip>
 
+## Control the Call from Your Custom LLM:
+
+Your custom LLM can send specific messages to control the flow of the call. Instead of sending `stream_response`, you can send the following types:
+
+### 1. End the Call
+
+To terminate the call:
+```json
+{
+  "type": "end_call",
+  "data": {
+    "stream_id": <stream_id>
+  }
+}
+```
+
+### 2. Transfer the Call
+
+To transfer the call to another destination (e.g., phone number):
+```json
+{
+  "type": "transfer_call",
+  "data": {
+    "stream_id": <stream_id>,
+    "destination": "+1234567890"
+  }
+}
+```
+
+**Parameters:**
+- `stream_id`: The unique identifier for the stream.
+- `destination`: The phone number or endpoint to transfer the call to.
+
 ## Handle advanced interaction:
 
 Millis AI manages the conversation flow, including interruption detection and end-of-turn signals. You will be notified of these events:
