@@ -83,7 +83,8 @@
         "tutorials/webhook-function-call-api",
         "tutorials/integrate-function-call-with-make.com",
         "tutorials/setup-custom-llm-websocket",
-        "tutorials/create-voice-agent-for-appointment-scheduling"
+        "tutorials/create-voice-agent-for-appointment-scheduling",
+        "tutorials/personalize-calls-with-variables-and-metadata"
       ]
     },
     {
