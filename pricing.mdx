@@ -40,11 +40,17 @@ The pricing for LLMs is based on the number of tokens processed. Here, we transl
 
 TTS pricing is based on the number of characters or words that the agent speaks. This means longer responses from your agent will cost more. Each provider has its own pricing structure:
 
-* **Eleven Labs**: $$0.15 / 1,000 characters (~ $0.12/min based on average speech length)
-* **OpenAI**: $$0.015 / 1,000 characters (~ $0.012/min)
-* **Rime**: $$0.075 / 1,000 characters (~ $0.06/min)
+| Service    | Cost per 1,000 Characters (USD)  | Approx. Cost per Minute (USD) |
+|------------|----------------------------------|-------------------------------|
+| Eleven Labs| 0.10                             | ~$0.05                        |
+| OpenAI     | 0.015                            | ~$0.0075                      |
+| Cartesia   | 0.0392                           | ~$0.0196                      |
+| PlayHT     | 0.25                             | ~$0.125                       |
+| Deepgram   | 0.015                            | ~$0.0075                      |
+| Neets      | 0.001                            | ~$0.0005                      |
+| Rime       | 0.075                            | ~$0.0375                      |
 
-*A typical minute of voice interaction might involve processing around 200 tokens (800 characters).*
+*A typical minute of voice interaction might involve processing around 500 characters.*
 
 ### STT Pricing
 
@@ -57,8 +63,8 @@ Let's calculate the total cost for a 10-minute session using GPT-4o and Eleven L
 - **GPT-4o LLM charge**: 10 min x $0.004/min = $0.04
 - **Eleven Labs TTS charge**:
 Since the agent only speaks for about half of the session (5 minutes), and assuming an average speech rate translates to 4,000 characters spoken by the agent:
-  - 4,000 characters x $0.15/1,000 characters = $0.60
+  - 4,000 characters x $0.10/1,000 characters = $0.40
 - **STT charge**:
 Since the human also speaks for approximately half of the session (5 minutes):
   - 5 minutes x $0.0043/min = $0.0215
-- **Total cost**: $0.20 (base) + $0.04 (LLM) + $0.60 (TTS) + $0.0215 (STT) = $0.8615
+- **Total cost**: $0.20 (base) + $0.04 (LLM) + $0.40 (TTS) + $0.0215 (STT) = $0.6615
