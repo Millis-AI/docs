@@ -109,7 +109,10 @@
       "pages": [
         "api-reference/endpoint/phones/set-phone-agent",
         "api-reference/endpoint/phones/get-phones",
-        "api-reference/endpoint/phones/get-phone"
+        "api-reference/endpoint/phones/get-phone",
+        "api-reference/endpoint/phones/set-agent-config-override",
+        "api-reference/endpoint/phones/set-agent",
+        "api-reference/endpoint/phones/import-phone-number"
       ]
     },
     {
@@ -134,6 +137,7 @@
     {
       "group": "Call Logs",
       "pages": [
+        "api-reference/endpoint/call-logs/list-call-histories",
         "api-reference/endpoint/call-logs/get-call-history",
         "api-reference/endpoint/call-logs/delete-call-recording"
       ]
@@ -151,7 +155,8 @@
         "api-reference/endpoint/knowledge-base/generate-presigned-url",
         "api-reference/endpoint/knowledge-base/create-file",
         "api-reference/endpoint/knowledge-base/delete-file",
-        "api-reference/endpoint/knowledge-base/set-agent-files"
+        "api-reference/endpoint/knowledge-base/set-agent-files",
+        "api-reference/endpoint/knowledge-base/list-files"
       ]
     },
     {
@@ -164,7 +169,9 @@
         "api-reference/endpoint/campaigns/start-campaign",
         "api-reference/endpoint/campaigns/stop-campaign",
         "api-reference/endpoint/campaigns/get-campaign",
-        "api-reference/endpoint/campaigns/delete-campaign"
+        "api-reference/endpoint/campaigns/delete-campaign",
+        "api-reference/endpoint/campaigns/get-campaign-info",
+        "api-reference/endpoint/campaigns/delete-campaign-record"
       ]
     }
   ]
