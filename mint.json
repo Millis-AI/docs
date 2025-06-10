@@ -88,6 +88,12 @@
       ]
     },
     {
+      "group": "User",
+      "pages": [
+        "api-reference/endpoint/user/get-user-info"
+      ]
+    },
+    {
       "group": "Call Management",
       "pages": [
         "api-reference/endpoint/call-management/register-call",
@@ -110,8 +116,11 @@
         "api-reference/endpoint/phones/set-phone-agent",
         "api-reference/endpoint/phones/get-phones",
         "api-reference/endpoint/phones/get-phone",
+        "api-reference/endpoint/phones/delete-phone",
         "api-reference/endpoint/phones/set-agent-config-override",
         "api-reference/endpoint/phones/set-agent",
+        "api-reference/endpoint/phones/update-phone-tags",
+        "api-reference/endpoint/phones/purchase-phone-number",
         "api-reference/endpoint/phones/import-phone-number"
       ]
     },
@@ -171,6 +180,7 @@
         "api-reference/endpoint/campaigns/get-campaign",
         "api-reference/endpoint/campaigns/delete-campaign",
         "api-reference/endpoint/campaigns/get-campaign-info",
+        "api-reference/endpoint/campaigns/edit-campaign-info",
         "api-reference/endpoint/campaigns/delete-campaign-record"
       ]
     }
