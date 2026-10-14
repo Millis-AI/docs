@@ -4,7 +4,7 @@ description: 'Using Millis Platform via WebSocket to build voice agents on deskt
 icon: 'code'
 ---
 
-This tutorial guides you through the process of integrating the Millis AI platform directly via WebSocket to build voice agents for desktop or mobile apps. Users can capture audio natively and send it to Millis via WebSocket, receiving voice responses in real-time.
+This tutorial guides you through the process of integrating the Millis AI platform directly via WebSocket to build voice agents for desktop or mobile apps. Users can send native audio or text messages to Millis via WebSocket, receiving voice responses in real-time.
 
 ## Requirements
 
@@ -89,7 +89,25 @@ function sendAudioPacket(audioData) {
 **Note**: Audio packets should be in PCM format, 16000 Hz sample rate, and mono (1 channel).
 </Tip>
 
-### 4. Receiving and Playing Audio Responses
+### 4. Sending Text Input
+
+After receiving `onready`, you can send a user chat message as a JSON text frame on the same WebSocket connection:
+
+```json
+{"method": "text", "data": "What can you help me with?"}
+```
+
+```javascript
+function sendTextMessage(text) {
+  ws.send(JSON.stringify({ method: "text", data: text }));
+}
+```
+
+The message content must be a non-empty string in the `data` field. Wait for `onready` before calling `sendTextMessage`.
+
+Each text message is treated as a complete user turn and triggers the agent's response. You can send text alongside audio in the same session. Text input is supported for both standard and OpenAI Realtime agents; continue handling incoming audio and response events as described below.
+
+### 5. Receiving and Playing Audio Responses
 
 Millis will send audio responses as ArrayBuffers with the same format and sample rate. You need to buffer and play these on your side.
 
@@ -108,11 +126,11 @@ ws.onmessage = (event) => {
 ```
 ArrayBuffer data will be the audio packets, while string data indicates normal events that you need to process accordingly.
 
-### 5. Keeping the Connection Alive
+### 6. Keeping the Connection Alive
 
 Send a `{"method": "ping"}` message every 1000 packets to keep the connection alive.
 
-### 6. Handling Incoming Events from Millis
+### 7. Handling Incoming Events from Millis
 
 Millis may send various events to manage the session and interaction. Here is the logic behind each message:
 
@@ -158,5 +176,5 @@ function handleIncomingMessage(message) {
 }
 ```
 
-### 7. Closing the Connection
+### 8. Closing the Connection
 Simply close the WebSocket connection to stop the conversation.
